@@ -12,7 +12,7 @@ interface ModelCardProps {
 export function ModelCard({ model, isFeaturedLarge = false }: ModelCardProps) {
   return (
     <Link href={`/models/${model.slug}`} className="model-card-link group" data-model-id={model.id} data-model-slug={model.slug}>
-      <article id={`model-card-${model.id}`} className={`model-card h-full flex flex-col bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 overflow-hidden hover:shadow-2xl hover:shadow-indigo-500/20 hover:bg-slate-900/70 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 hover:border-indigo-500/30 ${isFeaturedLarge ? 'featured-large' : ''}`}>
+      <article id={`model-card-${model.id}`} className={`model-card h-full flex flex-col bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 overflow-hidden hover:shadow-2xl hover:shadow-indigo-500/20 hover:bg-slate-900/70 transition-all duration-500 transform hover:-translate-y-2 hover:border-indigo-500/30 ${isFeaturedLarge ? 'featured-large' : ''}`}>
         {/* Thumbnail */}
         <div className={`card-thumbnail relative ${isFeaturedLarge ? 'h-72' : 'h-56'} bg-gradient-to-br from-slate-900 to-slate-800 overflow-hidden flex-shrink-0`}>
           <Image
@@ -68,23 +68,6 @@ export function ModelCard({ model, isFeaturedLarge = false }: ModelCardProps) {
               )}
             </div>
           )}
-
-          {/* Marketplace Button */}
-          <div className="card-marketplace-buttons flex gap-3 pt-4 mt-auto">
-            {model.unrealMarketUrl && (
-              <div className="flex-1 flex items-center justify-center gap-2 text-sm text-white bg-gradient-to-r from-blue-600/80 to-blue-700/80 px-4 py-2.5 rounded-xl font-semibold group-hover:shadow-lg group-hover:shadow-blue-500/30 transition-all border border-blue-500/30">
-                <span className="text-lg">🎮</span>
-                <span>Unreal Engine</span>
-              </div>
-            )}
-            {model.unityMarketUrl && (
-              <div className="flex-1 flex items-center justify-center gap-2 text-sm text-white bg-gradient-to-r from-purple-600/80 to-purple-700/80 px-4 py-2.5 rounded-xl font-semibold group-hover:shadow-lg group-hover:shadow-purple-500/30 transition-all border border-purple-500/30">
-                <span className="text-lg">🎯</span>
-                <span>Unity</span>
-              </div>
-            )}
-          </div>
-
         </div>
       </article>
     </Link>
