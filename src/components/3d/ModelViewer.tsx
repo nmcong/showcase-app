@@ -252,7 +252,7 @@ export function ModelViewer({ modelUrl, className = '', texturesPath, enableText
   const [isLoading, setIsLoading] = useState(true);
   const [useCustomTextures, setUseCustomTextures] = useState(!!texturesPath);
   const progressRef = useRef(0);
-  const loadingTimerRef = useRef<NodeJS.Timeout>();
+  const loadingTimerRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
     // Clear any existing timer
