@@ -169,8 +169,8 @@ export default function ModelDetailPage() {
                       }}
                       className={`thumbnail-button flex-shrink-0 relative w-28 h-28 rounded-xl overflow-hidden transition-all duration-300 snap-start ${
                         selectedImageIndex === idx 
-                          ? 'thumbnail-active ring-4 ring-indigo-500 shadow-2xl shadow-indigo-500/50 scale-105' 
-                          : 'thumbnail-inactive ring-2 ring-white/10'
+                          ? 'thumbnail-active' 
+                          : 'thumbnail-inactive'
                       }`}
                       style={{ boxSizing: 'content-box' }}
                     >
@@ -342,6 +342,19 @@ export default function ModelDetailPage() {
 
       {/* Custom scrollbar styles */}
       <style jsx global>{`
+        /* Thumbnail styles */
+        .thumbnail-button {
+          border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .thumbnail-button.thumbnail-active {
+          border-color: #6366f1;
+        }
+
+        .thumbnail-button.thumbnail-inactive:hover {
+          border-color: rgba(99, 102, 241, 0.5);
+        }
+
         /* Horizontal scrollbar for gallery */
         .thumbnails-scroll-container::-webkit-scrollbar {
           height: 10px;

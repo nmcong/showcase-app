@@ -74,7 +74,7 @@ export function ModelViewer({ modelUrl, className = '' }: ModelViewerProps) {
       onContextMenu={(e) => e.preventDefault()}
     >
       <Canvas
-        camera={{ position: [0, 0, 5], fov: 50 }}
+        camera={{ position: [0, 0, 1.5], fov: 50 }}
         style={{ 
           background: '#000000',
           userSelect: 'none',
