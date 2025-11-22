@@ -112,8 +112,8 @@ echo "================================================"
 # Generate Prisma client
 sudo npx prisma generate
 
-# Run migrations
-sudo npx prisma migrate deploy
+# Push database schema (simpler than migrations for now)
+sudo npx prisma db push --accept-data-loss
 
 # Seed database (optional, only on first deploy)
 if [ ! -f "$APP_INSTALL_PATH/.deployed" ]; then
