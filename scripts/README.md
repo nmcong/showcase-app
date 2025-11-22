@@ -41,16 +41,16 @@ Hướng dẫn sử dụng các scripts tự động deploy lên VPS (không dù
 git clone <your-repo-url>
 cd showcase-app
 
-# Copy environment template
-cp .env.example .env
+# Copy deployment config template
+cp env.deploy.example .env.deploy
 
 # Edit configuration
-nano .env
+nano .env.deploy
 ```
 
-### 2. Cấu Hình `.env`
+### 2. Cấu Hình `.env.deploy`
 
-Mở file `.env` và điền thông tin:
+Mở file `.env.deploy` và điền thông tin:
 
 ```bash
 # VPS Connection
@@ -407,7 +407,7 @@ ssh-keygen -t rsa -b 4096
 # Copy to VPS
 ssh-copy-id root@your-vps-ip
 
-# Update .env
+# Update .env.deploy
 VPS_PASSWORD=  # Leave empty
 VPS_SSH_KEY=~/.ssh/id_rsa
 ```
@@ -460,7 +460,7 @@ sudo systemctl restart sshd
 # Visit Keycloak Admin Console
 https://auth.yourdomain.com
 
-# Login với credentials từ .env
+# Login với credentials từ .env.deploy
 Username: admin
 Password: <KEYCLOAK_ADMIN_PASSWORD>
 
@@ -472,7 +472,7 @@ Password: <KEYCLOAK_ADMIN_PASSWORD>
 ### 2. Update App với Client Secret
 
 ```bash
-# Update .env
+# Update .env.deploy
 KEYCLOAK_CLIENT_SECRET=<client-secret-from-keycloak>
 
 # Redeploy app
@@ -498,7 +498,7 @@ Nếu gặp vấn đề:
 1. Check logs (xem phần Monitoring trên)
 2. Review troubleshooting section
 3. Check GitHub issues
-4. Verify .env configuration
+4. Verify .env.deploy configuration
 
 ## 📚 Additional Resources
 

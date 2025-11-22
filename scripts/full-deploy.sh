@@ -22,12 +22,12 @@ echo "  5. Setup Nginx reverse proxy"
 echo ""
 
 # Load environment variables
-if [ -f .env ]; then
-    export $(cat .env | grep -v '^#' | xargs)
-    echo "✓ Loaded .env"
+if [ -f .env.deploy ]; then
+    export $(cat .env.deploy | grep -v '^#' | xargs)
+    echo "✓ Loaded .env.deploy"
 else
-    echo "✗ Error: .env not found!"
-    echo "  Please copy .env.example to .env and configure it."
+    echo "✗ Error: .env.deploy not found!"
+    echo "  Please copy .env.deploy.example to .env.deploy and configure it."
     exit 1
 fi
 
@@ -141,7 +141,7 @@ echo "  1. Setup SSL certificates:"
 echo "     - For Showcase: ./scripts/setup-ssl-showcase-only.sh"
 echo "  2. Configure Keycloak:"
 echo "     - Access: http://$KEYCLOAK_DOMAIN/admin/"
-echo "     - Login with credentials from .env"
+echo "     - Login with credentials from .env.deploy"
 echo "     - Create realm: showcase-realm"
 echo "     - Create client: showcase-client"
 echo "  3. Monitor services:"

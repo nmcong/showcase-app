@@ -143,7 +143,7 @@ docs/
 ### Intermediate (Ready to Deploy)
 1. Read [02-NO_DOCKER_DEPLOYMENT.md](./02-NO_DOCKER_DEPLOYMENT.md)
 2. Read [03-DEPLOYMENT_SCRIPTS_SUMMARY.md](./03-DEPLOYMENT_SCRIPTS_SUMMARY.md)
-3. Setup `.env`
+3. Setup `.env.deploy`
 4. Run deployment scripts
 
 ### Advanced (Deep Understanding)

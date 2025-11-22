@@ -13,10 +13,10 @@ echo "Keycloak Installation Script"
 echo "================================================"
 
 # Load environment variables
-if [ -f .env ]; then
-    export $(cat .env | grep -v '^#' | xargs)
+if [ -f .env.deploy ]; then
+    export $(cat .env.deploy | grep -v '^#' | xargs)
 else
-    echo "✗ Error: .env not found!"
+    echo "✗ Error: .env.deploy not found!"
     exit 1
 fi
 

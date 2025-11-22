@@ -9,10 +9,10 @@ echo "Automatic Application Deployment"
 echo "================================================"
 
 # Load environment variables
-if [ -f .env ]; then
-    export $(cat .env | grep -v '^#' | xargs)
+if [ -f .env.deploy ]; then
+    export $(cat .env.deploy | grep -v '^#' | xargs)
 else
-    echo "✗ Error: .env not found!"
+    echo "✗ Error: .env.deploy not found!"
     exit 1
 fi
 
@@ -71,13 +71,13 @@ echo "================================================"
 echo "Creating Environment Files"
 echo "================================================"
 
-# Create .env for Prisma CLI
-sudo tee $APP_INSTALL_PATH/.env > /dev/null << ENVFILE
+# Create .env.deploy for Prisma CLI
+sudo tee $APP_INSTALL_PATH/.env.deploy > /dev/null << ENVFILE
 DATABASE_URL="postgresql://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME?schema=public"
 ENVFILE
 
-# Create .env.local for Next.js
-sudo tee $APP_INSTALL_PATH/.env.local > /dev/null << ENVFILE
+# Create .env.deploy.local for Next.js
+sudo tee $APP_INSTALL_PATH/.env.deploy.local > /dev/null << ENVFILE
 # Database
 DATABASE_URL="postgresql://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME?schema=public"
 

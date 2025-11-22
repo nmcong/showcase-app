@@ -282,30 +282,50 @@ Contributions are welcome! Please follow these steps:
 
 MIT License - feel free to use this project for your own showcase!
 
-## 🚀 Quick Production Deployment
+## 🚀 Quick Start
 
-**NEW! All deployment fixes integrated** - One command to deploy everything:
+**→ See [QUICK-START.md](./QUICK-START.md) for detailed quick start guide**
 
+### Local Development
 ```bash
-# 1. Configure environment
-cp .env.example .env
-# Edit .env with your VPS and domain settings
+npm install
+cp .env.local.example .env.local
+nano .env.local  # Configure
+npm run dev
+```
 
-# 2. Deploy (with all fixes!)
+### Production Deployment
+```bash
+cp env.deploy.example .env.deploy
+nano .env.deploy  # Configure VPS & credentials
 chmod +x scripts/*.sh
 ./scripts/full-deploy.sh
 ```
 
-✅ **All issues fixed automatically** - No manual fixes needed!
+✅ **All deployment fixes integrated** - No manual fixes needed!
+
+## Environment Files
+
+Project này sử dụng **2 env files** riêng biệt:
+
+| File | Purpose | Documentation |
+|------|---------|---------------|
+| `.env.local` | Local development (Next.js app) | Standard Next.js env file |
+| `.env.deploy` | VPS deployment (scripts) | Used by deployment scripts |
+
+**📖 Chi tiết**: [ENV-FILES-GUIDE.md](./ENV-FILES-GUIDE.md)
 
 ## Documentation
 
 Comprehensive guides available (organized by reading priority):
 
+### 🎯 Getting Started
+**🆕 [Quick Start Guide](./QUICK-START.md)** - Get started in 5 minutes  
+**🆕 [Environment Files Guide](./ENV-FILES-GUIDE.md)** - Understand .env.local vs .env.deploy
+
 ### ⚡ Production Deployment (v2.0 - RECOMMENDED)
 **🆕 [Complete Deployment Guide - Fixed Version](./docs/13-DEPLOYMENT-FIXED.md)** - All issues resolved!  
-**🆕 [Troubleshooting Guide](./docs/12-TROUBLESHOOTING.md)** - All errors and solutions  
-**🆕 [Changelog - Fixes](./CHANGELOG-FIXES.md)** - What's been fixed in v2.0
+**🆕 [Troubleshooting Guide](./docs/12-TROUBLESHOOTING.md)** - All errors and solutions
 
 ### 🚀 Getting Started
 1. 📖 **[Quick Start Guide](./docs/01-QUICKSTART.md)** - Get started in 5 minutes
