@@ -47,4 +47,16 @@ next-env.d.ts
 # deployment
 scripts/*.log
 backups/
-ca/*
+
+# SSL certificates (keep README only)
+# Ignore all certificate files in ca/ and subdirectories
+ca/**/*.txt
+ca/**/*.key
+ca/**/*.crt
+ca/**/*.pem
+ca/**/*.csr
+# But allow README and .gitignore files
+!ca/README.md
+!ca/.gitignore
+!ca/**/README.md
+!ca/**/.gitignore

@@ -20,15 +20,53 @@ else
     exit 1
 fi
 
-# Check if certificate files exist
-if [ ! -f "ca/private_key_vibytes-tech.txt" ]; then
-    echo "✗ Error: ca/private_key_vibytes-tech.txt not found!"
+# Certificate directory
+CERT_DIR="ca/auth"
+
+# Check if certificate files exist (support multiple naming patterns)
+PRIVATE_KEY=""
+ROOT_CA=""
+DOMAIN_CERT=""
+
+# Find private key
+if [ -f "$CERT_DIR/private_key_auth-vibytes-tech.txt" ]; then
+    PRIVATE_KEY="$CERT_DIR/private_key_auth-vibytes-tech.txt"
+elif [ -f "$CERT_DIR/private_key_vibytes-tech.txt" ]; then
+    PRIVATE_KEY="$CERT_DIR/private_key_vibytes-tech.txt"
+elif [ -f "$CERT_DIR/private_key.txt" ]; then
+    PRIVATE_KEY="$CERT_DIR/private_key.txt"
+else
+    echo "✗ Error: Private key not found in $CERT_DIR/"
+    echo "  Expected one of:"
+    echo "    - private_key_auth-vibytes-tech.txt"
+    echo "    - private_key_vibytes-tech.txt"
+    echo "    - private_key.txt"
     exit 1
 fi
 
-if [ ! -f "ca/rootca_vibytes-tech.txt" ]; then
-    echo "✗ Error: ca/rootca_vibytes-tech.txt not found!"
+# Find root CA
+if [ -f "$CERT_DIR/rootca_auth-vibytes-tech.txt" ]; then
+    ROOT_CA="$CERT_DIR/rootca_auth-vibytes-tech.txt"
+elif [ -f "$CERT_DIR/rootca_vibytes-tech.txt" ]; then
+    ROOT_CA="$CERT_DIR/rootca_vibytes-tech.txt"
+elif [ -f "$CERT_DIR/rootca.txt" ]; then
+    ROOT_CA="$CERT_DIR/rootca.txt"
+else
+    echo "✗ Error: Root CA certificate not found in $CERT_DIR/"
+    echo "  Expected one of:"
+    echo "    - rootca_auth-vibytes-tech.txt"
+    echo "    - rootca_vibytes-tech.txt"
+    echo "    - rootca.txt"
     exit 1
+fi
+
+# Find domain certificate (optional)
+if [ -f "$CERT_DIR/certificate_auth-vibytes-tech.txt" ]; then
+    DOMAIN_CERT="$CERT_DIR/certificate_auth-vibytes-tech.txt"
+elif [ -f "$CERT_DIR/certificate_vibytes-tech.txt" ]; then
+    DOMAIN_CERT="$CERT_DIR/certificate_vibytes-tech.txt"
+elif [ -f "$CERT_DIR/certificate.txt" ]; then
+    DOMAIN_CERT="$CERT_DIR/certificate.txt"
 fi
 
 echo ""
@@ -36,6 +74,10 @@ echo "SSL Configuration:"
 echo "-----------------"
 echo "Keycloak Domain: $KEYCLOAK_DOMAIN"
 echo "VPS: $VPS_USER@$VPS_HOST"
+echo "Certificate Dir: $CERT_DIR"
+echo "Private Key: $PRIVATE_KEY"
+echo "Root CA: $ROOT_CA"
+echo "Domain Cert: ${DOMAIN_CERT:-Not found (will use CA)}"
 echo ""
 
 # Create temp directory for processed certificates
@@ -43,16 +85,19 @@ TEMP_CERT_DIR="/tmp/ssl-keycloak-$$"
 mkdir -p "$TEMP_CERT_DIR"
 
 # Copy and rename certificates
-cp ca/private_key_vibytes-tech.txt "$TEMP_CERT_DIR/vibytes-tech.key"
-cp ca/rootca_vibytes-tech.txt "$TEMP_CERT_DIR/vibytes-tech-ca.crt"
+echo "Preparing certificates..."
+cp "$PRIVATE_KEY" "$TEMP_CERT_DIR/vibytes-tech.key"
+cp "$ROOT_CA" "$TEMP_CERT_DIR/vibytes-tech-ca.crt"
+echo "  ✓ Private key: $(basename $PRIVATE_KEY)"
+echo "  ✓ Root CA: $(basename $ROOT_CA)"
 
 # Check if domain certificate exists
-if [ -f "ca/certificate_vibytes-tech.txt" ]; then
-    echo "✓ Found domain certificate"
-    cp ca/certificate_vibytes-tech.txt "$TEMP_CERT_DIR/vibytes-tech.crt"
+if [ -n "$DOMAIN_CERT" ]; then
+    echo "  ✓ Domain certificate: $(basename $DOMAIN_CERT)"
+    cp "$DOMAIN_CERT" "$TEMP_CERT_DIR/vibytes-tech.crt"
     HAS_DOMAIN_CERT=true
 else
-    echo "⚠ Domain certificate not found, will use CA certificate"
+    echo "  ⚠ Domain certificate not found, will use CA certificate"
     HAS_DOMAIN_CERT=false
 fi
 

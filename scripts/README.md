@@ -142,6 +142,30 @@ Cấu hình:
 - SSL certificates (Let's Encrypt)
 - Auto-renewal
 
+### Step 6: Setup SSL for Keycloak (Optional - Using Your Own Certificates)
+
+```bash
+./scripts/setup-ssl-keycloak.sh
+```
+
+**Sử dụng khi:**
+- Bạn có SSL certificate riêng (không dùng Let's Encrypt)
+- Cần setup HTTPS với custom certificates
+
+**Yêu cầu:**
+- Có file certificates trong thư mục `ca/`:
+  - `private_key_vibytes-tech.txt`
+  - `rootca_vibytes-tech.txt`
+  - `certificate_vibytes-tech.txt` (optional)
+
+Script sẽ:
+- ✅ Upload certificates lên VPS
+- ✅ Configure Nginx với SSL
+- ✅ Update Keycloak config cho HTTPS
+- ✅ Test SSL connection
+
+**Chi tiết:** Xem [docs/12-SSL_KEYCLOAK_SETUP.md](../docs/12-SSL_KEYCLOAK_SETUP.md)
+
 ## 🔧 Scripts Khác
 
 ### Backup
@@ -452,6 +476,7 @@ Nếu gặp vấn đề:
 
 - [VPS Deployment Guide](../docs/04-VPS_DEPLOYMENT_GUIDE.md)
 - [Keycloak Setup](../docs/05-KEYCLOAK_SETUP.md)
+- [SSL Keycloak Setup](../docs/12-SSL_KEYCLOAK_SETUP.md)
 - [Version Compatibility](../docs/08-VERSION_COMPATIBILITY.md)
 - [All Documentation](../docs/README.md)
 

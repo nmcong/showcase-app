@@ -1,0 +1,24 @@
+# SSL Certificate Files - DO NOT COMMIT TO GIT
+# Các file certificate - KHÔNG commit lên Git
+
+# Private keys
+*.key
+*private*.txt
+*private*.pem
+private_key*
+
+# Certificates (keep README only)
+*.crt
+*.pem
+certificate*.txt
+rootca*.txt
+
+# Certificate requests
+*.csr
+
+# Allow README files in all subdirectories
+!README.md
+!.gitignore
+!*/README.md
+!*/.gitignore
+
