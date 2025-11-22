@@ -119,7 +119,7 @@ export function ModelFilters({ categories, availableTags }: ModelFiltersProps) {
                 ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/30 border-indigo-500/50'
                 : 'bg-slate-800/50 text-slate-300 border-white/10 hover:bg-slate-800 hover:border-indigo-500/30 hover:text-white'
             }`}
-          >
+        >
             All Categories
           </button>
           {categories.map((cat) => (

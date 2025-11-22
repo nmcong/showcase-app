@@ -159,19 +159,19 @@ export function ModelGrid() {
           const isFeaturedLarge = model.featured && index === models.findIndex(m => m.featured);
           
           return (
-            <div
-              key={model.id}
+          <div
+            key={model.id}
               className={`grid-item ${isFeaturedLarge ? 'lg:col-span-2' : ''} ${shouldAnimate ? 'animate-fadeInUp' : ''}`}
               data-model-index={index}
               data-featured={isFeaturedLarge}
-              style={{
+            style={{
                 animationDelay: shouldAnimate ? `${index * 0.1}s` : undefined,
                 opacity: !shouldAnimate ? 1 : undefined,
                 transform: !shouldAnimate ? 'translateY(0)' : undefined
-              }}
-            >
+            }}
+          >
               <ModelCard model={model} isFeaturedLarge={isFeaturedLarge} />
-            </div>
+          </div>
           );
         })}
       </div>

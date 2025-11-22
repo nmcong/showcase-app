@@ -428,7 +428,7 @@ export function ModelViewer({ modelUrl, className = '', texturesPath, enableText
                 </svg>
                 <span>{useCustomTextures ? 'High Quality' : 'Standard'}</span>
               </button>
-            </div>
+      </div>
           )}
         </>
       )}

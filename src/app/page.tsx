@@ -34,17 +34,17 @@ export default function HomePage() {
   ]);
 
   const [availableTags] = useState<string[]>([
-    'Characters',
-    'Props',
-    'Weapons',
-    'Vehicles',
-    'Environment',
-    'Buildings',
-    'Nature',
-    'Sci-Fi',
-    'Fantasy',
-    'Modern',
-  ]);
+        'Characters',
+        'Props',
+        'Weapons',
+        'Vehicles',
+        'Environment',
+        'Buildings',
+        'Nature',
+        'Sci-Fi',
+        'Fantasy',
+        'Modern',
+      ]);
 
   return (
     <div id="home-page" className="home-page min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
