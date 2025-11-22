@@ -50,11 +50,8 @@ backups/
 
 # SSL certificates (keep README only)
 # Ignore all certificate files in ca/ and subdirectories
-ca/**/*.txt
-ca/**/*.key
-ca/**/*.crt
-ca/**/*.pem
-ca/**/*.csr
+ca
+.idea
 # But allow README and .gitignore files
 !ca/README.md
 !ca/.gitignore
