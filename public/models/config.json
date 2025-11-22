@@ -1,0 +1,44 @@
+{
+  "models": [
+    {
+      "id": "katana-bamboo-001",
+      "title": "Bamboo Katana",
+      "slug": "bamboo-katana",
+      "description": "A beautifully crafted bamboo katana with traditional Japanese aesthetics. Features high-quality PBR textures including ambient occlusion, base color, metallic, normal maps, and roughness. Perfect for samurai games, feudal Japan settings, or any project requiring authentic Japanese weaponry.",
+      "category": "Weapons",
+      "tags": ["Katana", "Sword", "Japanese", "Weapon", "Bamboo", "Samurai", "Medieval"],
+      "thumbnail": "/models/KatanaBamboo/thumbnail.jpg",
+      "modelPath": "/models/KatanaBamboo/bamboo_katana.glb",
+      "images": [
+        "/models/KatanaBamboo/images/079c33e8-cc7f-4a61-8f13-94174e6113c1.jpg",
+        "/models/KatanaBamboo/images/1a1b6953-203d-4a1a-a14d-ced1d8918d72.jpg",
+        "/models/KatanaBamboo/images/7bd42116-dc73-4272-a38a-72903d15322e.jpg",
+        "/models/KatanaBamboo/images/a3c98f70-cef7-45ea-9070-47ab4958effe.jpg",
+        "/models/KatanaBamboo/images/48c3f069-2c0e-48da-b1c3-5a6c862d5203.jpg",
+        "/models/KatanaBamboo/images/062995ea-40d8-42fe-b8ca-70ad3e701c53.jpg",
+        "/models/KatanaBamboo/images/0b0ec75a-596f-4ce4-8d87-237271bf49bd.jpg",
+        "/models/KatanaBamboo/images/3dd5a77f-57aa-46c1-857c-377aba2fb310.jpg"
+      ],
+      "fabUrl": "https://www.fab.com/listings/adf3e0a5-42ef-4ba0-bf33-03e4272be0a3",
+      "featured": true,
+      "stats": {
+        "polygons": "~5K",
+        "textures": "4K PBR",
+        "fileSize": "~15MB"
+      },
+      "features": [
+        "High-quality PBR materials",
+        "Optimized for real-time rendering",
+        "Multiple texture sets (blade, guard, handle, scabbard)",
+        "Game-ready asset",
+        "Mobile-friendly LODs available"
+      ],
+      "technicalDetails": {
+        "textureResolution": "4096x4096",
+        "textureFormats": ["Ambient Occlusion", "Base Color", "Metallic", "Normal (DirectX)", "Roughness"],
+        "uvMapping": "Non-overlapping UVs",
+        "collisionMesh": "Included"
+      }
+    }
+  ]
+}

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { KeycloakProvider } from "@/components/providers/KeycloakProvider";
 
 export const metadata: Metadata = {
   title: "3D Models Showcase",
@@ -15,9 +14,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <KeycloakProvider>
-          {children}
-        </KeycloakProvider>
+        {children}
       </body>
     </html>
   );
