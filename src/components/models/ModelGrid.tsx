@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { ModelCard } from './ModelCard';
 import { Model } from '@/types';
 import { useFilterStore } from '@/store/useFilterStore';
@@ -10,6 +10,8 @@ export function ModelGrid() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [shouldAnimate, setShouldAnimate] = useState(true);
+  const hasLoadedOnce = useRef(false);
   const filters = useFilterStore();
 
   useEffect(() => {
@@ -85,13 +87,30 @@ export function ModelGrid() {
         console.error('Error fetching models:', error);
       } finally {
         setLoading(false);
+        hasLoadedOnce.current = true;
       }
     };
 
     fetchModels();
   }, [filters, page]);
 
-  if (loading) {
+  // Disable animation after first load to prevent re-triggering
+  useEffect(() => {
+    if (shouldAnimate && !loading && models.length > 0) {
+      // Wait for animation to complete (longest delay + animation duration)
+      const maxDelay = (models.length - 1) * 0.1;
+      const animationDuration = 0.6;
+      const totalTime = (maxDelay + animationDuration) * 1000;
+      
+      const timer = setTimeout(() => {
+        setShouldAnimate(false);
+      }, totalTime);
+
+      return () => clearTimeout(timer);
+    }
+  }, [shouldAnimate, loading, models.length]);
+
+  if (loading && !hasLoadedOnce.current) {
     return (
       <div id="grid-loading" className="grid-loading flex items-center justify-center py-20">
         <div className="loading-content text-center">
@@ -132,11 +151,12 @@ export function ModelGrid() {
         {models.map((model, index) => (
           <div
             key={model.id}
-            className="grid-item animate-fadeInUp"
+            className={`grid-item ${shouldAnimate ? 'animate-fadeInUp' : ''}`}
             data-model-index={index}
             style={{
-              animationDelay: `${index * 0.1}s`,
-              animationFillMode: 'both'
+              animationDelay: shouldAnimate ? `${index * 0.1}s` : undefined,
+              opacity: !shouldAnimate ? 1 : undefined,
+              transform: !shouldAnimate ? 'translateY(0)' : undefined
             }}
           >
             <ModelCard model={model} />
@@ -183,7 +203,7 @@ export function ModelGrid() {
           >
             Next →
           </button>
-        </div>
+        </nav>
       )}
     </div>
   );
