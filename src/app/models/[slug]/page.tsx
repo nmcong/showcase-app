@@ -76,7 +76,7 @@ export default function ModelDetailPage() {
   ];
 
   return (
-    <div id="model-detail-page" className="model-detail-page h-screen flex flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
+    <div id="model-detail-page" className="model-detail-page min-h-screen lg:h-screen flex flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 overflow-auto lg:overflow-hidden">
       {/* JSON-LD Structured Data for Product */}
       {model && (
         <script
@@ -127,12 +127,12 @@ export default function ModelDetailPage() {
         </div>
       </header>
 
-      {/* Main Content - No Scroll */}
-      <main id="detail-main" className="detail-main flex-1 overflow-hidden">
-        <div className="detail-container w-full max-w-[1612px] mx-auto px-4 sm:px-6 lg:px-8 h-full">
-          <div className="detail-layout grid grid-cols-1 xl:grid-cols-3 gap-6 h-full py-6">
+      {/* Main Content */}
+      <main id="detail-main" className="detail-main flex-1 overflow-hidden lg:overflow-auto">
+        <div className="detail-container w-full max-w-[1612px] mx-auto px-4 sm:px-6 lg:px-8 lg:h-full">
+          <div className="detail-layout grid grid-cols-1 xl:grid-cols-3 gap-6 lg:h-full py-6">
             {/* Left: Preview Area */}
-            <div id="preview-area" className="preview-area xl:col-span-2 flex flex-col gap-4 h-full">
+            <div id="preview-area" className="preview-area xl:col-span-2 flex flex-col gap-4 h-[600px] lg:h-auto xl:h-full">
               {/* Main Viewer - Takes remaining space */}
               <div id="model-viewer-container" className="model-viewer-container flex-1 bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
                 <div 
@@ -200,9 +200,9 @@ export default function ModelDetailPage() {
             </div>
 
             {/* Right: Scrollable Details Sidebar */}
-            <div id="details-sidebar" className="details-sidebar xl:col-span-1 overflow-hidden">
+            <div id="details-sidebar" className="details-sidebar xl:col-span-1 overflow-visible xl:overflow-hidden">
               <div 
-                className="sidebar-scroll-container h-full overflow-y-auto pr-2 space-y-4"
+                className="sidebar-scroll-container xl:h-full overflow-visible xl:overflow-y-auto pr-2 space-y-4"
                 style={{
                   scrollbarWidth: 'thin',
                   scrollbarColor: '#6366f1 transparent'
@@ -322,7 +322,7 @@ export default function ModelDetailPage() {
                 )}
 
                 {/* Purchase CTA - Sticky at bottom of sidebar scroll */}
-                <div id="purchase-cta-section" className="purchase-cta-section sticky bottom-0 bg-gradient-to-t from-slate-950 via-slate-950 to-transparent pt-4 pb-2">
+                <div id="purchase-cta-section" className="purchase-cta-section xl:sticky xl:bottom-0 bg-gradient-to-t from-slate-950 via-slate-950 to-transparent pt-4 pb-2">
                   {model.fabUrl && (
                     <a
                       href={model.fabUrl}

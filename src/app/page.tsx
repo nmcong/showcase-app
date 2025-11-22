@@ -89,12 +89,12 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section id="hero-section" className="hero-section max-w-[1612px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="hero-content text-center mb-12">
-          <h2 className="hero-title text-2xl md:text-3xl font-bold text-white mb-4">
+      <section id="hero-section" className="hero-section max-w-[1612px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="hero-content text-center mb-6">
+          <h2 className="hero-title text-xl md:text-2xl font-bold text-white mb-2">
             Discover Amazing 3D Assets
           </h2>
-          <p className="hero-description text-lg text-slate-400 max-w-2xl mx-auto">
+          <p className="hero-description text-base text-slate-400 max-w-2xl mx-auto">
             Browse our curated collection of high-quality 3D models for Unity, Unreal Engine, and more
           </p>
         </div>
