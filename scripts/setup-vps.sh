@@ -195,8 +195,10 @@ echo "Connecting to VPS and running setup..."
 if [ -n "$VPS_PASSWORD" ]; then
     # Using sshpass for password authentication
     if ! command -v sshpass &> /dev/null; then
-        echo "Installing sshpass..."
-        sudo apt-get install -y sshpass
+        echo "Error: sshpass is not installed!"
+        echo "On macOS, install it with: brew install hudochenkov/sshpass/sshpass"
+        echo "On Linux, install it with: sudo apt-get install -y sshpass"
+        exit 1
     fi
     
     sshpass -p "$VPS_PASSWORD" scp -o StrictHostKeyChecking=no -P "$VPS_PORT" \

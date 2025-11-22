@@ -34,17 +34,28 @@ cat > /tmp/db-setup-script.sh << REMOTESCRIPT
 #!/bin/bash
 set -e
 
+# Fix locale warnings
+export LC_ALL=C.UTF-8
+export LANG=C.UTF-8
+
 echo "================================================"
 echo "Creating PostgreSQL Databases and Users"
 echo "================================================"
 
 # Create App Database
 sudo -u postgres psql << EOF
--- Create app user
-CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';
+-- Create app user (skip if exists)
+DO \$\$
+BEGIN
+  IF NOT EXISTS (SELECT FROM pg_catalog.pg_user WHERE usename = '$DB_USER') THEN
+    CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';
+  END IF;
+END
+\$\$;
 
--- Create app database
-CREATE DATABASE $DB_NAME;
+-- Create app database (skip if exists)
+SELECT 'CREATE DATABASE $DB_NAME'
+WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '$DB_NAME')\gexec
 
 -- Grant privileges
 GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;
@@ -64,11 +75,18 @@ echo "✓ App database created"
 
 # Create Keycloak Database
 sudo -u postgres psql << EOF
--- Create keycloak user
-CREATE USER $KEYCLOAK_DB_USER WITH PASSWORD '$KEYCLOAK_DB_PASSWORD';
+-- Create keycloak user (skip if exists)
+DO \$\$
+BEGIN
+  IF NOT EXISTS (SELECT FROM pg_catalog.pg_user WHERE usename = '$KEYCLOAK_DB_USER') THEN
+    CREATE USER $KEYCLOAK_DB_USER WITH PASSWORD '$KEYCLOAK_DB_PASSWORD';
+  END IF;
+END
+\$\$;
 
--- Create keycloak database
-CREATE DATABASE $KEYCLOAK_DB_NAME;
+-- Create keycloak database (skip if exists)
+SELECT 'CREATE DATABASE $KEYCLOAK_DB_NAME'
+WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '$KEYCLOAK_DB_NAME')\gexec
 
 -- Grant privileges
 GRANT ALL PRIVILEGES ON DATABASE $KEYCLOAK_DB_NAME TO $KEYCLOAK_DB_USER;
@@ -91,11 +109,19 @@ echo "================================================"
 echo "Optimizing PostgreSQL for 4GB RAM"
 echo "================================================"
 
-# Backup original config
-sudo cp /etc/postgresql/*/main/postgresql.conf /etc/postgresql/*/main/postgresql.conf.backup
+# Find PostgreSQL config file
+PG_CONF=\$(sudo find /etc/postgresql -name postgresql.conf -type f | head -n 1)
 
-# Update PostgreSQL configuration
-sudo tee -a /etc/postgresql/*/main/postgresql.conf > /dev/null << PGCONF
+if [ -z "\$PG_CONF" ]; then
+    echo "✗ PostgreSQL config file not found, skipping optimization"
+else
+    echo "Found config: \$PG_CONF"
+    
+    # Backup original config
+    sudo cp "\$PG_CONF" "\$PG_CONF.backup"
+    
+    # Update PostgreSQL configuration
+    sudo tee -a "\$PG_CONF" > /dev/null << PGCONF
 
 # ================================================
 # Performance Tuning for 4GB RAM
@@ -130,11 +156,12 @@ log_lock_waits = on
 
 PGCONF
 
-# Restart PostgreSQL
-echo "Restarting PostgreSQL..."
-sudo systemctl restart postgresql
-
-echo "✓ PostgreSQL configured and restarted"
+    # Restart PostgreSQL
+    echo "Restarting PostgreSQL..."
+    sudo systemctl restart postgresql
+    
+    echo "✓ PostgreSQL configured and restarted"
+fi
 
 echo ""
 echo "================================================"
