@@ -76,7 +76,7 @@ Hệ thống deployment tự động hoàn chỉnh cho VPS **2 CPU | 4GB RAM | 8
    - Performance benchmarks
 
 3. **`.gitignore`** - Updated
-   - Thêm `.env.deploy` vào ignore list
+   - Thêm `.env` vào ignore list
    - Thêm `backups/` folder
 
 ## 🎯 Cách Sử Dụng
@@ -85,10 +85,10 @@ Hệ thống deployment tự động hoàn chỉnh cho VPS **2 CPU | 4GB RAM | 8
 
 ```bash
 # 1. Copy environment template
-cp env.deploy.example .env.deploy
+cp env.deploy.example .env
 
 # 2. Edit with your VPS info
-nano .env.deploy
+nano .env
 # Điền: VPS_HOST, VPS_USER, VPS_PASSWORD, domains, passwords, etc.
 
 # 3. Run one command
@@ -102,8 +102,8 @@ chmod +x scripts/*.sh  # On Linux/Mac
 
 ```bash
 # Copy and configure environment
-cp env.deploy.example .env.deploy
-nano .env.deploy
+cp env.deploy.example .env
+nano .env
 
 # Run scripts one by one
 ./scripts/setup-vps.sh
@@ -113,7 +113,7 @@ nano .env.deploy
 ./scripts/setup-nginx.sh
 ```
 
-## 📋 Environment Variables (`.env.deploy`)
+## 📋 Environment Variables (`.env`)
 
 ### Required Variables:
 
@@ -251,7 +251,7 @@ Scripts hỗ trợ cả 2:
 - SSH key authentication
 
 ### Environment-based Configuration
-Tất cả parameters từ `.env.deploy`:
+Tất cả parameters từ `.env`:
 - No hardcoded values
 - Easy to change
 - Secure (file not committed)
@@ -340,7 +340,7 @@ curl https://auth.yourdomain.com/health/ready
 ### 2. Update App
 
 ```bash
-# Update .env.deploy with client secret
+# Update .env with client secret
 KEYCLOAK_CLIENT_SECRET=<your-client-secret>
 
 # Redeploy app
@@ -374,7 +374,7 @@ https://showcase.yourdomain.com
 1. ✅ Configure domains DNS (A records)
 2. ✅ Ensure VPS is accessible via SSH
 3. ✅ Backup existing data (if any)
-4. ✅ Read through `.env.deploy.example`
+4. ✅ Read through `.env.example`
 5. ✅ Use strong passwords
 
 ### Security:
@@ -428,7 +428,7 @@ crontab -e
 - [ ] VPS ready (4GB RAM, 2 CPU)
 - [ ] Domains configured
 - [ ] SSH access working
-- [ ] .env.deploy configured
+- [ ] .env configured
 - [ ] Strong passwords set
 
 ### Post-Deployment:

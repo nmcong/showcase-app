@@ -13,7 +13,19 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '12');
 
-    const where: any = { published: true };
+    interface WhereClause {
+      published: boolean;
+      category?: { slug: string };
+      tags?: { hasSome: string[] };
+      price?: { gte?: number; lte?: number };
+      OR?: Array<{
+        title?: { contains: string; mode: 'insensitive' };
+        description?: { contains: string; mode: 'insensitive' };
+      }>;
+      featured?: boolean;
+    }
+
+    const where: WhereClause = { published: true };
 
     if (category) {
       where.category = { slug: category };
@@ -63,10 +75,10 @@ export async function GET(request: NextRequest) {
     ]);
 
     // Calculate average rating for each model
-    const modelsWithRating = models.map((model) => {
+    const modelsWithRating = models.map((model: { comments: { rating: number }[]; [key: string]: unknown }) => {
       const avgRating =
         model.comments.length > 0
-          ? model.comments.reduce((sum, c) => sum + c.rating, 0) / model.comments.length
+          ? model.comments.reduce((sum: number, c: { rating: number }) => sum + c.rating, 0) / model.comments.length
           : 0;
       return {
         ...model,

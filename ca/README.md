@@ -57,7 +57,7 @@ SSL certificates cho Keycloak authentication server.
 
 ### Yêu cầu
 
-- ✅ File `.env.deploy` đã được cấu hình đúng
+- ✅ File `.env` đã được cấu hình đúng
 - ✅ Keycloak đã được cài đặt trên VPS
 - ✅ Nginx đã được cài đặt và cấu hình cơ bản
 - ✅ Certificates đã được đặt trong `ca/auth/`

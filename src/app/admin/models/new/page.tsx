@@ -60,9 +60,14 @@ function NewModelForm() {
       });
 
       router.push('/admin');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error creating model:', error);
-      setError(error.response?.data?.error || 'Failed to create model');
+      if (error instanceof Error && 'response' in error) {
+        const axiosError = error as { response?: { data?: { error?: string } } };
+        setError(axiosError.response?.data?.error || 'Failed to create model');
+      } else {
+        setError('Failed to create model');
+      }
     } finally {
       setSubmitting(false);
     }

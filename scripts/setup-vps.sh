@@ -14,12 +14,12 @@ echo "VPS Setup Script - No Docker"
 echo "================================================"
 
 # Load environment variables
-if [ -f .env.deploy ]; then
-    export $(cat .env.deploy | grep -v '^#' | xargs)
-    echo "✓ Loaded .env.deploy"
+if [ -f .env ]; then
+    export $(cat .env | grep -v '^#' | xargs)
+    echo "✓ Loaded .env"
 else
-    echo "✗ Error: .env.deploy not found!"
-    echo "  Please copy .env.deploy.example to .env.deploy and configure it."
+    echo "✗ Error: .env not found!"
+    echo "  Please copy .env.example to .env and configure it."
     exit 1
 fi
 

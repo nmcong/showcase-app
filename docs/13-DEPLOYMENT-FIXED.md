@@ -60,10 +60,10 @@ npm install
 
 ```bash
 # Copy example file
-cp env.deploy.example .env.deploy
+cp env.deploy.example .env
 
 # Edit with your settings
-nano .env.deploy
+nano .env
 ```
 
 **Required Settings:**
@@ -245,7 +245,7 @@ sudo tail -f /var/log/nginx/error.log
    https://auth.vibytes.tech/admin/
    ```
 
-2. Login with credentials from `.env.deploy`:
+2. Login with credentials from `.env`:
    - Username: `KEYCLOAK_ADMIN`
    - Password: `KEYCLOAK_ADMIN_PASSWORD`
 
@@ -263,7 +263,7 @@ sudo tail -f /var/log/nginx/error.log
 5. Get Client Secret:
    - Go to Credentials tab
    - Copy the Secret
-   - Update `.env.deploy` with `KEYCLOAK_CLIENT_SECRET`
+   - Update `.env` with `KEYCLOAK_CLIENT_SECRET`
 
 6. Redeploy app with new secret:
    ```bash
@@ -322,7 +322,7 @@ Script will:
 ### Update Keycloak
 
 ```bash
-# Update KEYCLOAK_VERSION in .env.deploy
+# Update KEYCLOAK_VERSION in .env
 # Then run:
 ./scripts/install-keycloak.sh
 ```

@@ -50,10 +50,10 @@ TOTAL:               ~4.05GB (PERFECT! 😊)
 
 ```bash
 # Copy environment template
-cp env.deploy.example .env.deploy
+cp env.deploy.example .env
 
 # Edit with your VPS info
-nano .env.deploy
+nano .env
 
 # Run full deployment
 ./scripts/full-deploy.sh
@@ -415,7 +415,7 @@ Scenario: 50 concurrent users
 - [ ] 2 domain names (app + auth)
 - [ ] DNS A records configured
 - [ ] SSH access working
-- [ ] env.deploy.example copied to .env.deploy
+- [ ] env.deploy.example copied to .env
 - [ ] All passwords configured
 - [ ] Git repository accessible
 

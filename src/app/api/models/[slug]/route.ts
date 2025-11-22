@@ -32,7 +32,7 @@ export async function GET(
     // Calculate average rating
     const avgRating =
       model.comments.length > 0
-        ? model.comments.reduce((sum, c) => sum + c.rating, 0) / model.comments.length
+        ? model.comments.reduce((sum: number, c: { rating: number }) => sum + c.rating, 0) / model.comments.length
         : 0;
 
     return NextResponse.json({

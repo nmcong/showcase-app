@@ -288,8 +288,8 @@ MIT License - feel free to use this project for your own showcase!
 
 ```bash
 # 1. Configure environment
-cp env.deploy.example .env.deploy
-# Edit .env.deploy with your VPS and domain settings
+cp .env.example .env
+# Edit .env with your VPS and domain settings
 
 # 2. Deploy (with all fixes!)
 chmod +x scripts/*.sh

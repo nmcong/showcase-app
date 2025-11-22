@@ -25,7 +25,7 @@ Script `setup-ssl-keycloak.sh` tự động hóa toàn bộ quá trình cài đ�
    - PostgreSQL
 
 3. **File cấu hình**:
-   - `.env.deploy` đã được cấu hình đúng
+   - `.env` đã được cấu hình đúng
 
 ## 🚀 Cách sử dụng
 

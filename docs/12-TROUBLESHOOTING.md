@@ -432,7 +432,7 @@ add_header X-XSS-Protection "1; mode=block" always;
 
 Trước khi deploy, verify:
 
-- [ ] `.env.deploy` đã được configure đúng
+- [ ] `.env` đã được configure đúng
 - [ ] Database passwords đã được set
 - [ ] SSL certificates (nếu có) đã đặt trong `ca/` directories
 - [ ] Prisma version là 6.x (không phải 7.x)

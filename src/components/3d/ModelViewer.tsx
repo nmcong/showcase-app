@@ -1,8 +1,8 @@
 'use client';
 
-import { Suspense, useRef } from 'react';
+import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment, useGLTF, PresentationControls } from '@react-three/drei';
+import { OrbitControls, Environment, useGLTF } from '@react-three/drei';
 
 interface ModelViewerProps {
   modelUrl: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import axios from 'axios';
@@ -15,7 +15,7 @@ export default function ModelDetailPage() {
   const [model, setModel] = useState<Model & { averageRating?: number } | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchModel = async () => {
+  const fetchModel = useCallback(async () => {
     try {
       const response = await axios.get(`/api/models/${slug}`);
       setModel(response.data);
@@ -24,13 +24,13 @@ export default function ModelDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [slug]);
 
   useEffect(() => {
     if (slug) {
       fetchModel();
     }
-  }, [slug]);
+  }, [slug, fetchModel]);
 
   if (loading) {
     return (

@@ -42,15 +42,15 @@ git clone <your-repo-url>
 cd showcase-app
 
 # Copy environment template
-cp env.deploy.example .env.deploy
+cp .env.example .env
 
 # Edit configuration
-nano .env.deploy
+nano .env
 ```
 
-### 2. Cấu Hình `.env.deploy`
+### 2. Cấu Hình `.env`
 
-Mở file `.env.deploy` và điền thông tin:
+Mở file `.env` và điền thông tin:
 
 ```bash
 # VPS Connection
@@ -407,7 +407,7 @@ ssh-keygen -t rsa -b 4096
 # Copy to VPS
 ssh-copy-id root@your-vps-ip
 
-# Update .env.deploy
+# Update .env
 VPS_PASSWORD=  # Leave empty
 VPS_SSH_KEY=~/.ssh/id_rsa
 ```
@@ -460,7 +460,7 @@ sudo systemctl restart sshd
 # Visit Keycloak Admin Console
 https://auth.yourdomain.com
 
-# Login với credentials từ .env.deploy
+# Login với credentials từ .env
 Username: admin
 Password: <KEYCLOAK_ADMIN_PASSWORD>
 
@@ -472,7 +472,7 @@ Password: <KEYCLOAK_ADMIN_PASSWORD>
 ### 2. Update App với Client Secret
 
 ```bash
-# Update .env.deploy
+# Update .env
 KEYCLOAK_CLIENT_SECRET=<client-secret-from-keycloak>
 
 # Redeploy app
@@ -498,7 +498,7 @@ Nếu gặp vấn đề:
 1. Check logs (xem phần Monitoring trên)
 2. Review troubleshooting section
 3. Check GitHub issues
-4. Verify .env.deploy configuration
+4. Verify .env configuration
 
 ## 📚 Additional Resources
 
