@@ -1,62 +1,54 @@
 # 3D Models Showcase
 
-A professional showcase platform for 3D models with marketplace integration (Unreal Engine & Unity), built with Next.js, React Three Fiber, Prisma, and Keycloak authentication.
+A professional showcase platform for 3D models with Keycloak authentication, built with Next.js and React Three Fiber.
 
-## Features
+## ✨ Features
 
 ### Frontend Features
-- 🎨 **Modern UI** - Beautiful, responsive design with Tailwind CSS
+- 🎨 **Modern UI** - Beautiful, responsive design with Tailwind CSS 4
 - 🎮 **3D Model Viewer** - Interactive 3D model preview using React Three Fiber
 - 🔍 **Advanced Filtering** - Filter by category, tags, price range, and search
 - ⭐ **Featured Models** - Highlight your best models
-- 💬 **User Comments & Reviews** - Star ratings and text reviews with moderation
 - 🛒 **Marketplace Integration** - Direct links to Unreal and Unity marketplaces
 - 📱 **Responsive Design** - Works perfectly on desktop, tablet, and mobile
 
-### Admin Features
-- 🔐 **Keycloak Authentication** - Secure admin access with role-based authentication
-- 📝 **Model Management** - Create, edit, and delete models
-- ✅ **Comment Moderation** - Approve or reject user comments
-- 📊 **Dashboard** - Overview of models, comments, and statistics
+### Authentication
+- 🔐 **Keycloak Authentication** - Secure access with role-based authentication
+- 👤 **User Management** - Seamless login/logout experience
 
-## Tech Stack
+## 🚀 Tech Stack
 
 - **Frontend**: Next.js 16, React 19, TypeScript
 - **3D Rendering**: Three.js, React Three Fiber, Drei
 - **Styling**: Tailwind CSS 4
 - **State Management**: Zustand
 - **Authentication**: Keycloak 26.4.5 (server) + keycloak-js 26.2.1 (client)
-- **Database**: PostgreSQL with Prisma ORM
 - **API**: Next.js API Routes
 
-## Prerequisites
+## 📋 Prerequisites
 
-Before you begin, ensure you have the following installed:
+Before you begin, ensure you have:
 - Node.js 20+ and npm
-- PostgreSQL database
 - Keycloak server (optional for local development)
 
-## Installation
+## 🛠️ Installation
 
-1. **Clone the repository**
+### 1. Clone the repository
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/yourusername/showcase-app.git
 cd showcase-app
 ```
 
-2. **Install dependencies**
+### 2. Install dependencies
 ```bash
 npm install
 ```
 
-3. **Set up environment variables**
+### 3. Set up environment variables
 
 Create a `.env.local` file in the root directory:
 
 ```env
-# Database
-DATABASE_URL="postgresql://user:password@localhost:5432/showcase_db?schema=public"
-
 # Keycloak Configuration
 NEXT_PUBLIC_KEYCLOAK_URL="http://localhost:8080"
 NEXT_PUBLIC_KEYCLOAK_REALM="showcase-realm"
@@ -67,300 +59,177 @@ KEYCLOAK_CLIENT_SECRET="your-client-secret"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ```
 
-4. **Set up the database**
-
-```bash
-# Generate Prisma Client
-npx prisma generate
-
-# Run migrations
-npx prisma migrate dev --name init
-
-# (Optional) Seed the database
-npx prisma db seed
-```
-
-5. **Set up Keycloak** (if using authentication)
-
-- Start Keycloak server
-- Create a new realm called `showcase-realm`
-- Create a client called `showcase-client`
-- Add admin role to your user
-- Update `.env.local` with your Keycloak configuration
-
-## Running the Application
-
-### Development Mode
+### 4. Run the development server
 
 ```bash
 npm run dev
 ```
 
-Visit `http://localhost:3000` to see the showcase page.
+Visit `http://localhost:3000` to see the showcase page!
 
-### Production Build
+## 📖 Documentation
 
+Comprehensive documentation is available in the [`docs/`](./docs/) folder:
+
+### 🎯 Getting Started
+- **[Environment Files Guide](./docs/00-ENV-FILES-GUIDE.md)** - Understanding `.env.local` vs `.env.deploy`
+- **[Quick Start Guide](./docs/01-QUICKSTART.md)** - Get started in 5 minutes
+- **[No Docker Deployment](./docs/02-NO_DOCKER_DEPLOYMENT.md)** - Deploy without Docker (optimal for 4GB RAM)
+
+### 🚀 Production Deployment
+- **[VPS Deployment Guide](./docs/03-VPS_DEPLOYMENT_GUIDE.md)** - Complete VPS setup (manual)
+- **[Deployment Scripts Reference](./docs/04-DEPLOYMENT-SCRIPTS-REFERENCE.md)** - Automated deployment overview
+- **[Complete Deployment Guide](./docs/05-DEPLOYMENT-COMPLETE-GUIDE.md)** - All-in-one deployment guide ⭐
+
+### 🔐 Authentication
+- **[Keycloak Setup](./docs/06-KEYCLOAK_SETUP.md)** - Authentication configuration
+- **[Keycloak 26 Migration](./docs/07-KEYCLOAK_26_MIGRATION.md)** - Latest Keycloak version
+
+### 🔒 SSL & Security
+- **[SSL Keycloak Setup](./docs/08-SSL_KEYCLOAK_SETUP.md)** - HTTPS configuration
+- **[SSL Certificates Guide](./docs/09-SSL-CERTIFICATES-GUIDE.md)** - Certificate management
+- **[SSL Auth Setup](./docs/10-SSL-AUTH-SETUP.md)** - Auth domain SSL
+
+### 📚 Additional Resources
+- **[3D Models Guide](./docs/11-3D_MODELS_GUIDE.md)** - Prepare and optimize 3D models
+- **[Version Compatibility](./docs/12-VERSION_COMPATIBILITY.md)** - Component versions
+- **[Troubleshooting](./docs/13-TROUBLESHOOTING.md)** - Common issues and solutions
+- **[Changelog](./docs/14-CHANGELOG.md)** - Version history
+- **[Updates Summary](./docs/15-UPDATES_SUMMARY.md)** - Recent updates
+
+**→ Start here**: [`docs/README.md`](./docs/README.md) - Complete documentation index with reading order
+
+## 🚀 Quick Deployment
+
+### Local Development
 ```bash
-npm run build
-npm start
+npm install
+npm run dev
 ```
 
-## Project Structure
+### Production Deployment (VPS)
+```bash
+# 1. Setup deployment config
+cp env.deploy.example .env.deploy
+nano .env.deploy  # Configure VPS & credentials
+
+# 2. Make scripts executable
+chmod +x scripts/*.sh
+
+# 3. Deploy everything
+./scripts/full-deploy.sh
+```
+
+✅ **Automated deployment in ~15-20 minutes!**
+
+## 📂 Project Structure
 
 ```
 showcase-app/
-├── prisma/
-│   └── schema.prisma          # Database schema
-├── public/                     # Static files
+├── docs/                      # 📚 Complete documentation
+├── scripts/                   # 🤖 Deployment automation scripts
+├── ca/                        # 🔒 SSL certificates
 ├── src/
-│   ├── app/                    # Next.js app directory
-│   │   ├── api/                # API routes
-│   │   │   ├── models/         # Model endpoints
-│   │   │   ├── categories/     # Category endpoints
-│   │   │   ├── comments/       # Comment endpoints
-│   │   │   └── admin/          # Admin endpoints
-│   │   ├── admin/              # Admin pages
-│   │   ├── models/             # Model detail pages
-│   │   ├── layout.tsx          # Root layout
-│   │   └── page.tsx            # Home page
-│   ├── components/             # React components
-│   │   ├── 3d/                 # 3D viewer components
-│   │   ├── auth/               # Authentication components
-│   │   ├── comments/           # Comment components
-│   │   ├── filters/            # Filter components
-│   │   ├── models/             # Model components
-│   │   └── providers/          # Context providers
-│   ├── lib/                    # Utility libraries
-│   │   ├── prisma.ts           # Prisma client
-│   │   └── keycloak.ts         # Keycloak configuration
-│   ├── store/                  # Zustand stores
-│   │   ├── useAuthStore.ts     # Auth state
-│   │   └── useFilterStore.ts   # Filter state
-│   └── types/                  # TypeScript types
+│   ├── app/                   # Next.js app directory
+│   │   ├── layout.tsx         # Root layout
+│   │   └── page.tsx           # Home page
+│   ├── components/            # React components
+│   │   ├── 3d/                # 3D viewer components
+│   │   ├── auth/              # Authentication components
+│   │   ├── comments/          # Comment components
+│   │   ├── filters/           # Filter components
+│   │   ├── models/            # Model components
+│   │   └── providers/         # Context providers
+│   ├── lib/                   # Utility libraries
+│   │   └── keycloak.ts        # Keycloak configuration
+│   ├── store/                 # Zustand stores
+│   │   ├── useAuthStore.ts    # Auth state
+│   │   └── useFilterStore.ts  # Filter state
+│   └── types/                 # TypeScript types
 │       └── index.ts
-├── .env.local                  # Environment variables (create this)
+├── public/                    # Static files
+├── .env.local                 # Local environment (create this)
 ├── package.json
 ├── tsconfig.json
-└── README.md
+└── README.md                  # This file
 ```
 
-## API Endpoints
+## 🎨 Customization
 
-### Public Endpoints
+### Adding 3D Models
 
-- `GET /api/models` - Get all published models (with filters)
-- `GET /api/models/[slug]` - Get a specific model
-- `GET /api/categories` - Get all categories
-- `POST /api/comments` - Submit a comment/review
-
-### Admin Endpoints (Requires Authentication)
-
-- `GET /api/admin/models` - Get all models
-- `POST /api/admin/models` - Create a new model
-- `PUT /api/admin/models/[id]` - Update a model
-- `DELETE /api/admin/models/[id]` - Delete a model
-- `GET /api/admin/comments` - Get all comments
-- `POST /api/admin/comments/[id]/approve` - Approve a comment
-- `DELETE /api/admin/comments/[id]` - Delete a comment
-
-## Database Schema
-
-### Models
-- id, title, slug, description
-- thumbnailUrl, modelUrl
-- price, unrealMarketUrl, unityMarketUrl
-- tags[], views, featured, published
-- categoryId, createdAt, updatedAt
-
-### Categories
-- id, name, slug, description
-- createdAt, updatedAt
-
-### Comments
-- id, authorName, authorEmail
-- content, rating (1-5)
-- approved, modelId
-- createdAt, updatedAt
-
-### Users
-- id, keycloakId, email, name
-- role, createdAt, updatedAt
-
-## Usage
-
-### Adding a New Model
-
-1. Log in as an admin
-2. Go to Admin Dashboard
-3. Click "Add New Model"
-4. Fill in the form:
-   - Title, description, category
-   - Upload thumbnail and 3D model (GLB/GLTF format)
-   - Add marketplace links (Unreal/Unity)
-   - Set price and tags
-   - Mark as featured/published
-5. Submit
-
-### Managing Comments
-
-1. Go to Admin Dashboard > Comments
-2. View pending comments
-3. Approve or delete comments
-4. Approved comments appear on model pages
-
-### Filtering Models (User Side)
-
-Users can filter models by:
-- Search text
-- Category
-- Tags
-- Price range
-- Featured only
-
-## Customization
-
-### Adding New Categories
-
-Use Prisma Studio or create a migration:
-
-```bash
-npx prisma studio
-```
+Refer to the [3D Models Guide](./docs/11-3D_MODELS_GUIDE.md) for:
+- Supported formats (GLB/GLTF)
+- Optimization techniques
+- Best practices
 
 ### Customizing the Theme
 
-Edit Tailwind configuration in `tailwind.config.js` and `globals.css`.
+Edit Tailwind configuration in `tailwind.config.js` and `src/app/globals.css`.
 
-### Adding More Model Formats
+## 🔧 Development
 
-The 3D viewer supports GLB and GLTF formats. To add more formats, modify the `ModelViewer` component.
-
-## Deployment
-
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Import project in Vercel
-3. Add environment variables
-4. Deploy
-
-### Docker
+### Available Scripts
 
 ```bash
-docker build -t showcase-app .
-docker run -p 3000:3000 showcase-app
+npm run dev              # Start development server
+npm run build            # Build for production
+npm start                # Start production server
+npm run lint             # Run ESLint
 ```
 
-## Troubleshooting
+### Deployment Scripts
+
+Located in `scripts/` folder:
+
+```bash
+./scripts/full-deploy.sh              # Full deployment
+./scripts/deploy-app-auto.sh          # Update app code
+./scripts/check-status.sh             # Check services status
+./scripts/setup-ssl-showcase-only.sh  # Setup SSL
+```
+
+See [Deployment Scripts Reference](./docs/04-DEPLOYMENT-SCRIPTS-REFERENCE.md) for details.
+
+## 🐛 Troubleshooting
+
+### Keycloak Authentication Issues
+- Verify Keycloak URL and realm settings
+- Check client configuration
+- Ensure user has appropriate roles
 
 ### 3D Models Not Loading
 - Ensure model URLs are accessible
 - Check CORS settings
 - Verify GLB/GLTF format
 
-### Keycloak Authentication Issues
-- Verify Keycloak URL and realm settings
-- Check client configuration
-- Ensure user has admin role
+For more issues and solutions, see [Troubleshooting Guide](./docs/13-TROUBLESHOOTING.md).
 
-### Database Connection Issues
-- Verify DATABASE_URL in .env.local
-- Ensure PostgreSQL is running
-- Run `npx prisma generate`
+## 📦 Environment Files
 
-## Contributing
+This project uses **2 separate environment files**:
 
-Contributions are welcome! Please follow these steps:
+| File | Purpose | Used By |
+|------|---------|---------|
+| `.env.local` | Local development | Next.js app on local machine |
+| `.env.deploy` | VPS deployment | Deployment scripts |
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Open a Pull Request
+**📖 Details**: See [Environment Files Guide](./docs/00-ENV-FILES-GUIDE.md)
 
-## License
+## 🔐 Security
 
-MIT License - feel free to use this project for your own showcase!
+- HTTPS enabled via SSL certificates
+- Keycloak for secure authentication
+- Environment variables for sensitive data
+- CORS properly configured
 
-## 🚀 Quick Start
-
-**→ See [QUICK-START.md](./QUICK-START.md) for detailed quick start guide**
-
-### Local Development
-```bash
-npm install
-cp .env.local.example .env.local
-nano .env.local  # Configure
-npm run dev
-```
-
-### Production Deployment
-```bash
-cp env.deploy.example .env.deploy
-nano .env.deploy  # Configure VPS & credentials
-chmod +x scripts/*.sh
-./scripts/full-deploy.sh
-```
-
-✅ **All deployment fixes integrated** - No manual fixes needed!
-
-## Environment Files
-
-Project này sử dụng **2 env files** riêng biệt:
-
-| File | Purpose | Documentation |
-|------|---------|---------------|
-| `.env.local` | Local development (Next.js app) | Standard Next.js env file |
-| `.env.deploy` | VPS deployment (scripts) | Used by deployment scripts |
-
-**📖 Chi tiết**: [ENV-FILES-GUIDE.md](./ENV-FILES-GUIDE.md)
-
-## Documentation
-
-Comprehensive guides available (organized by reading priority):
-
-### 🎯 Getting Started
-**🆕 [Quick Start Guide](./QUICK-START.md)** - Get started in 5 minutes  
-**🆕 [Environment Files Guide](./ENV-FILES-GUIDE.md)** - Understand .env.local vs .env.deploy
-
-### ⚡ Production Deployment (v2.0 - RECOMMENDED)
-**🆕 [Complete Deployment Guide - Fixed Version](./docs/13-DEPLOYMENT-FIXED.md)** - All issues resolved!  
-**🆕 [Troubleshooting Guide](./docs/12-TROUBLESHOOTING.md)** - All errors and solutions
-
-### 🚀 Getting Started
-1. 📖 **[Quick Start Guide](./docs/01-QUICKSTART.md)** - Get started in 5 minutes
-2. 🐳 **[No Docker Deployment](./docs/02-NO_DOCKER_DEPLOYMENT.md)** - Deploy without Docker (optimal for 4GB RAM)
-3. 🤖 **[Deployment Scripts Summary](./docs/03-DEPLOYMENT_SCRIPTS_SUMMARY.md)** - Automated deployment overview
-
-### 🔧 Deployment Guides
-4. 🚀 **[VPS Deployment Guide](./docs/04-VPS_DEPLOYMENT_GUIDE.md)** - Complete VPS setup (manual)
-5. 💻 **[Automated Deployment Scripts](./scripts/README.md)** - One-command deployment
-6. 📦 **[Other Deployment Options](./docs/09-DEPLOYMENT.md)** - Vercel, Railway, Docker, etc.
-
-### 🔐 Authentication
-7. 🔑 **[Keycloak Setup](./docs/05-KEYCLOAK_SETUP.md)** - Authentication configuration
-8. 🔄 **[Keycloak 26.4.5 Migration](./docs/06-KEYCLOAK_26_MIGRATION.md)** - Latest Keycloak version
-
-### 📚 Additional Resources
-9. 🎨 **[3D Models Guide](./docs/07-3D_MODELS_GUIDE.md)** - Prepare and optimize 3D models
-10. 📊 **[Version Compatibility](./docs/08-VERSION_COMPATIBILITY.md)** - Component versions
-11. 📝 **[Changelog](./docs/10-CHANGELOG.md)** - Version history
-12. 🔄 **[Updates Summary](./docs/11-UPDATES_SUMMARY.md)** - Recent updates
-
-## Support
-
-For issues and questions:
-- Open an issue on GitHub
-- Check the documentation
-- Review the API endpoints
-
-## Roadmap
+## 🌟 Features Roadmap
 
 ### Planned Features
 - [ ] File upload for models and thumbnails (S3/R2 integration)
 - [ ] Advanced analytics dashboard
-- [ ] Email notifications for comments
-- [ ] Social media integration (Share models)
+- [ ] Email notifications
+- [ ] Social media integration
 - [ ] Multi-language support (i18n)
 - [ ] Advanced 3D viewer controls
   - [ ] Wireframe mode
@@ -368,44 +237,52 @@ For issues and questions:
   - [ ] Lighting controls
   - [ ] Environment presets
 - [ ] Model comparison feature
-- [ ] User wishlists and favorites
 - [ ] Shopping cart integration
 - [ ] Payment gateway (Stripe/PayPal)
-- [ ] Affiliate tracking
 - [ ] SEO optimization
-- [ ] Sitemap generation
 
-### Current Version
+### Current Version Features
 - ✅ Keycloak 26.4.5 integration
 - ✅ Complete showcase functionality
-- ✅ Admin dashboard
 - ✅ 3D model viewer
-- ✅ Comment system with moderation
 - ✅ Advanced filtering
 - ✅ Marketplace links
+- ✅ Responsive design
+- ✅ Automated deployment scripts
 
-## 📖 Complete Documentation
+## 🤝 Contributing
 
-All documentation is organized in [`docs/`](./docs/) folder:
+Contributions are welcome! Please follow these steps:
 
-**→ Start here**: [`docs/README.md`](./docs/README.md) - Complete documentation index with reading order
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## Credits
+## 📝 License
+
+MIT License - feel free to use this project for your own showcase!
+
+## 🙏 Credits
 
 Built with ❤️ using:
 - [Next.js](https://nextjs.org/)
 - [React Three Fiber](https://docs.pmnd.rs/react-three-fiber)
-- [Prisma](https://www.prisma.io/)
 - [Keycloak](https://www.keycloak.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
+- [Three.js](https://threejs.org/)
 
-## License
-
-MIT License - feel free to use this project for your own showcase!
-
-## Support
+## 📞 Support
 
 For issues and questions:
 - 📚 Check [`docs/README.md`](./docs/README.md) for complete documentation
+- 🐛 See [Troubleshooting Guide](./docs/13-TROUBLESHOOTING.md)
 - 💬 Open an issue on GitHub
-- 📖 Review troubleshooting sections in relevant guides
+- 📖 Review documentation in `docs/` folder
+
+---
+
+**Version**: 2.0.0 (Database-Free)  
+**Last Updated**: November 22, 2025  
+**Powered by**: Next.js 16 • React 19 • Keycloak 26.4.5 • Tailwind CSS 4

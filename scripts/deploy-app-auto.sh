@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Auto-deploy without confirmation prompt
+# Auto-deploy without confirmation prompt (Database-free version)
 
 set -e
 
@@ -55,32 +55,11 @@ echo "✓ Code updated"
 
 echo ""
 echo "================================================"
-echo "Fixing Prisma Schema"
-echo "================================================"
-
-# Ensure datasource has url property (fix for schema)
-if ! grep -q 'url.*=.*env("DATABASE_URL")' $APP_INSTALL_PATH/prisma/schema.prisma; then
-    echo "Adding DATABASE_URL to Prisma schema..."
-    sudo sed -i '/^datasource db {/,/^}/ s/provider = "postgresql"/provider = "postgresql"\n  url      = env("DATABASE_URL")/' $APP_INSTALL_PATH/prisma/schema.prisma
-fi
-
-echo "✓ Prisma schema verified"
-
-echo ""
-echo "================================================"
 echo "Creating Environment Files"
 echo "================================================"
 
-# Create .env.deploy for Prisma CLI
-sudo tee $APP_INSTALL_PATH/.env.deploy > /dev/null << ENVFILE
-DATABASE_URL="postgresql://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME?schema=public"
-ENVFILE
-
-# Create .env.deploy.local for Next.js
-sudo tee $APP_INSTALL_PATH/.env.deploy.local > /dev/null << ENVFILE
-# Database
-DATABASE_URL="postgresql://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME?schema=public"
-
+# Create .env.local for Next.js
+sudo tee $APP_INSTALL_PATH/.env.local > /dev/null << ENVFILE
 # Keycloak
 NEXT_PUBLIC_KEYCLOAK_URL="https://$KEYCLOAK_DOMAIN"
 NEXT_PUBLIC_KEYCLOAK_REALM="showcase-realm"
@@ -96,41 +75,6 @@ echo "✓ Environment files created"
 
 echo ""
 echo "================================================"
-echo "Verifying Database Credentials"
-echo "================================================"
-
-# Fix app database user password to ensure it matches
-sudo -u postgres psql << EOF
-DO \$\$
-BEGIN
-  IF EXISTS (SELECT FROM pg_catalog.pg_user WHERE usename = '$DB_USER') THEN
-    ALTER USER $DB_USER WITH PASSWORD '$DB_PASSWORD';
-  END IF;
-END
-\$\$;
-
-GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;
-EOF
-
-# Grant schema privileges separately
-sudo -u postgres psql -d $DB_NAME << EOF
-GRANT ALL ON SCHEMA public TO $DB_USER;
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO $DB_USER;
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO $DB_USER;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO $DB_USER;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO $DB_USER;
-EOF
-
-# Test database connection
-echo "Testing app database connection..."
-if PGPASSWORD=$DB_PASSWORD psql -h localhost -U $DB_USER -d $DB_NAME -c "SELECT 1;" > /dev/null 2>&1; then
-    echo "✓ App database connection verified"
-else
-    echo "✗ Warning: Database connection test failed, but continuing..."
-fi
-
-echo ""
-echo "================================================"
 echo "Installing Dependencies"
 echo "================================================"
 
@@ -138,26 +82,6 @@ cd $APP_INSTALL_PATH
 sudo npm install --production=false
 
 echo "✓ Dependencies installed"
-
-echo ""
-echo "================================================"
-echo "Setting Up Database"
-echo "================================================"
-
-# Generate Prisma client
-sudo npx prisma generate
-
-# Push database schema (simpler than migrations for now)
-sudo npx prisma db push --accept-data-loss
-
-# Seed database (optional, only on first deploy)
-if [ ! -f "$APP_INSTALL_PATH/.deployed" ]; then
-    echo "First deployment - seeding database..."
-    sudo npm run db:seed || echo "Note: Seeding failed or not configured"
-    touch "$APP_INSTALL_PATH/.deployed"
-fi
-
-echo "✓ Database ready"
 
 echo ""
 echo "================================================"
@@ -263,11 +187,6 @@ if [ -n "$VPS_PASSWORD" ]; then
          export APP_PORT='$APP_PORT' && \
          export GIT_REPO_URL='$GIT_REPO_URL' && \
          export GIT_BRANCH='$GIT_BRANCH' && \
-         export DB_USER='$DB_USER' && \
-         export DB_PASSWORD='$DB_PASSWORD' && \
-         export DB_HOST='$DB_HOST' && \
-         export DB_PORT='$DB_PORT' && \
-         export DB_NAME='$DB_NAME' && \
          export KEYCLOAK_DOMAIN='$KEYCLOAK_DOMAIN' && \
          export KEYCLOAK_CLIENT_ID='$KEYCLOAK_CLIENT_ID' && \
          export KEYCLOAK_CLIENT_SECRET='$KEYCLOAK_CLIENT_SECRET' && \
@@ -288,11 +207,6 @@ else
          export APP_PORT='$APP_PORT' && \
          export GIT_REPO_URL='$GIT_REPO_URL' && \
          export GIT_BRANCH='$GIT_BRANCH' && \
-         export DB_USER='$DB_USER' && \
-         export DB_PASSWORD='$DB_PASSWORD' && \
-         export DB_HOST='$DB_HOST' && \
-         export DB_PORT='$DB_PORT' && \
-         export DB_NAME='$DB_NAME' && \
          export KEYCLOAK_DOMAIN='$KEYCLOAK_DOMAIN' && \
          export KEYCLOAK_CLIENT_ID='$KEYCLOAK_CLIENT_ID' && \
          export KEYCLOAK_CLIENT_SECRET='$KEYCLOAK_CLIENT_SECRET' && \
@@ -305,4 +219,3 @@ fi
 echo ""
 echo "✓ Application deployment completed successfully!"
 echo ""
-

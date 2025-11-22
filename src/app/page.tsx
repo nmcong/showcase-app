@@ -4,46 +4,53 @@ import { useEffect, useState } from 'react';
 import { ModelGrid } from '@/components/models/ModelGrid';
 import { ModelFilters } from '@/components/filters/ModelFilters';
 import { Category } from '@/types';
-import axios from 'axios';
 import Link from 'next/link';
 import { useAuthStore } from '@/store/useAuthStore';
 import { login, logout } from '@/lib/keycloak';
 
 export default function HomePage() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [availableTags, setAvailableTags] = useState<string[]>([]);
+  // Mock data since we don't have a database anymore
+  const [categories] = useState<Category[]>([
+    {
+      id: '1',
+      name: 'Characters',
+      slug: 'characters',
+      description: '3D character models',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: '2',
+      name: 'Props',
+      slug: 'props',
+      description: '3D prop models',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    {
+      id: '3',
+      name: 'Environments',
+      slug: 'environments',
+      description: '3D environment models',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  ]);
+
+  const [availableTags] = useState<string[]>([
+    'Characters',
+    'Props',
+    'Weapons',
+    'Vehicles',
+    'Environment',
+    'Buildings',
+    'Nature',
+    'Sci-Fi',
+    'Fantasy',
+    'Modern',
+  ]);
+
   const { authenticated, user } = useAuthStore();
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get('/api/categories');
-        setCategories(response.data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-
-    // Fetch available tags (you can implement a dedicated API for this)
-    const fetchTags = async () => {
-      // For now, using hardcoded tags. In production, fetch from API
-      setAvailableTags([
-        'Characters',
-        'Props',
-        'Weapons',
-        'Vehicles',
-        'Environment',
-        'Buildings',
-        'Nature',
-        'Sci-Fi',
-        'Fantasy',
-        'Modern',
-      ]);
-    };
-
-    fetchCategories();
-    fetchTags();
-  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -78,14 +85,6 @@ export default function HomePage() {
                       {user?.name || 'User'}
                     </span>
                   </div>
-                  {user?.roles?.includes('admin') && (
-                    <Link
-                      href="/admin"
-                      className="px-6 py-2.5 bg-gradient-to-r from-slate-800 to-slate-700 text-white rounded-xl hover:from-slate-700 hover:to-slate-600 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                    >
-                      Admin Panel
-                    </Link>
-                  )}
                   <button
                     onClick={logout}
                     className="px-6 py-2.5 bg-white/80 border border-slate-200 text-slate-700 rounded-xl hover:bg-white hover:shadow-lg transition-all duration-200 font-medium"

@@ -1,24 +1,22 @@
 #!/bin/bash
 
 # ================================================
-# Full Deployment Script - All Fixes Integrated
+# Full Deployment Script - Database-Free Version
 # ================================================
-# Script này đã integrate TẤT CẢ các fixes
-# Chạy script này để deploy hoàn toàn mà không cần fix scripts
+# Script này deploy application mà không cần database
 # ================================================
 
 set -e
 
 echo "================================================"
-echo "Full Deployment - Fixed Version"
+echo "Full Deployment - Database-Free Version"
 echo "================================================"
 echo ""
-echo "This script includes all fixes and will:"
+echo "This script will:"
 echo "  1. Setup VPS with all dependencies"
-echo "  2. Setup databases with password fixes"
-echo "  3. Install and configure Keycloak"
-echo "  4. Deploy Next.js application"
-echo "  5. Setup Nginx reverse proxy"
+echo "  2. Install and configure Keycloak"
+echo "  3. Deploy Next.js application"
+echo "  4. Setup Nginx reverse proxy"
 echo ""
 
 # Load environment variables
@@ -49,7 +47,7 @@ fi
 
 echo ""
 echo "================================================"
-echo "Step 1/5: Setting up VPS"
+echo "Step 1/4: Setting up VPS"
 echo "================================================"
 
 if [ -f "scripts/setup-vps.sh" ]; then
@@ -62,26 +60,11 @@ fi
 
 echo ""
 echo "================================================"
-echo "Step 2/5: Setting up Databases (with fixes)"
-echo "================================================"
-
-# Run database setup (already includes fixes)
-if [ -f "scripts/setup-database.sh" ]; then
-    echo "Running database setup..."
-    ./scripts/setup-database.sh
-    echo "✓ Database setup completed"
-else
-    echo "✗ Error: setup-database.sh not found!"
-    exit 1
-fi
-
-echo ""
-echo "================================================"
-echo "Step 3/5: Installing Keycloak"
+echo "Step 2/4: Installing Keycloak"
 echo "================================================"
 
 if [ -f "scripts/install-keycloak.sh" ]; then
-    echo "Running Keycloak installation (includes database fixes)..."
+    echo "Running Keycloak installation..."
     ./scripts/install-keycloak.sh
     echo "✓ Keycloak installation completed"
 else
@@ -90,11 +73,11 @@ fi
 
 echo ""
 echo "================================================"
-echo "Step 4/5: Deploying Application"
+echo "Step 3/4: Deploying Application"
 echo "================================================"
 
 if [ -f "scripts/deploy-app-auto.sh" ]; then
-    echo "Running application deployment (includes database fixes)..."
+    echo "Running application deployment..."
     ./scripts/deploy-app-auto.sh
     echo "✓ Application deployment completed"
 else
@@ -104,7 +87,7 @@ fi
 
 echo ""
 echo "================================================"
-echo "Step 5/5: Setting up Nginx"
+echo "Step 4/4: Setting up Nginx"
 echo "================================================"
 
 if [ -f "scripts/setup-nginx.sh" ]; then
@@ -148,6 +131,5 @@ echo "  3. Monitor services:"
 echo "     - pm2 logs showcase-app"
 echo "     - sudo journalctl -u keycloak -f"
 echo ""
-echo "For troubleshooting, see: docs/12-TROUBLESHOOTING.md"
+echo "For troubleshooting, see: docs/13-TROUBLESHOOTING.md"
 echo ""
-
