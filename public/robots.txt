@@ -1,0 +1,11 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow admin or private pages if any
+# Disallow: /admin/
+# Disallow: /api/
+
+# Sitemap
+Sitemap: https://3dmodels-showcase.com/sitemap.xml
+

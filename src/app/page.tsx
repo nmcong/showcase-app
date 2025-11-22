@@ -48,6 +48,25 @@ export default function HomePage() {
 
   return (
     <div id="home-page" className="home-page min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      {/* JSON-LD for Organization */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "3D Models Showcase",
+            "description": "Professional 3D assets marketplace",
+            "url": "https://3dmodels-showcase.com",
+            "logo": "https://3dmodels-showcase.com/logo.png",
+            "sameAs": [
+              "https://twitter.com/3dmodelsshowcase",
+              "https://facebook.com/3dmodelsshowcase"
+            ]
+          })
+        }}
+      />
+      
       {/* Header */}
       <header id="site-header" className="site-header glass-dark border-b border-white/10 sticky top-0 z-50">
         <div className="header-container max-w-[1612px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -57,10 +76,10 @@ export default function HomePage() {
                 <span className="text-white font-bold text-lg">3D</span>
               </div>
               <div className="brand-content">
-                <h1 className="brand-title text-4xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
+                <h1 className="brand-title text-4xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-blue-400 bg-clip-text text-transparent" itemProp="name">
                   3D Models Showcase
                 </h1>
-                <p className="brand-tagline text-slate-400 mt-1 text-lg font-medium">
+                <p className="brand-tagline text-slate-400 mt-1 text-lg font-medium" itemProp="description">
                   Professional 3D assets for your creative projects
                 </p>
               </div>

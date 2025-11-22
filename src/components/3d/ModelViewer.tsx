@@ -76,7 +76,7 @@ export function ModelViewer({ modelUrl, className = '' }: ModelViewerProps) {
       <Canvas
         camera={{ position: [0, 0, 5], fov: 50 }}
         style={{ 
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background: '#000000',
           userSelect: 'none',
           width: '100%',
           height: '100%'

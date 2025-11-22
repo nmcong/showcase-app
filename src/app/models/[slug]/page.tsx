@@ -38,7 +38,6 @@ export default function ModelDetailPage() {
   const params = useParams();
   const router = useRouter();
   const [model, setModel] = useState<ModelDetail | null>(null);
-  const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<'3d' | 'image'>('3d');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
@@ -57,24 +56,11 @@ export default function ModelDetailPage() {
       } catch (error) {
         console.error('Error fetching model:', error);
         router.push('/');
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchModel();
   }, [params.slug, router]);
-
-  if (loading) {
-    return (
-      <div id="loading-page" className="loading-page min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
-        <div className="loading-content text-center">
-          <div className="loading-spinner animate-spin rounded-full h-16 w-16 border-4 border-indigo-500/30 border-t-indigo-500 mx-auto"></div>
-          <p className="loading-text mt-4 text-slate-400">Loading model...</p>
-        </div>
-      </div>
-    );
-  }
 
   if (!model) {
     return null;
@@ -91,6 +77,42 @@ export default function ModelDetailPage() {
 
   return (
     <div id="model-detail-page" className="model-detail-page h-screen flex flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
+      {/* JSON-LD Structured Data for Product */}
+      {model && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Product",
+              "name": model.title,
+              "description": model.description,
+              "image": `https://3dmodels-showcase.com${model.thumbnail}`,
+              "category": model.category,
+              "brand": {
+                "@type": "Brand",
+                "name": "3D Models Showcase"
+              },
+              "offers": {
+                "@type": "Offer",
+                "url": model.fabUrl || `https://3dmodels-showcase.com/models/${model.slug}`,
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock",
+                "seller": {
+                  "@type": "Organization",
+                  "name": "Fab.com"
+                }
+              },
+              "aggregateRating": model.featured ? {
+                "@type": "AggregateRating",
+                "ratingValue": "5",
+                "reviewCount": "1"
+              } : undefined
+            })
+          }}
+        />
+      )}
+      
       {/* Header - Fixed */}
       <header id="detail-header" className="detail-header glass-dark border-b border-white/10 flex-shrink-0">
         <div className="detail-header-container w-full max-w-[1612px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -135,8 +157,8 @@ export default function ModelDetailPage() {
 
               {/* Gallery Thumbnails - Fixed height with horizontal scroll */}
               <div id="gallery-thumbnails" className="gallery-thumbnails flex-shrink-0 bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-4">
-                <div className="thumbnails-scroll-container flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#6366f1 transparent' }}>
-                   {allMedia.map((media, idx) => (
+                <div className="thumbnails-scroll-container flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory" style={{ scrollbarWidth: 'thin', scrollbarColor: '#6366f1 transparent' }}>
+                  {allMedia.map((media, idx) => (
                     <button
                       key={idx}
                       data-media-type={media.type}
@@ -145,10 +167,10 @@ export default function ModelDetailPage() {
                         setSelectedImageIndex(idx);
                         setViewMode(media.type === '3d' ? '3d' : 'image');
                       }}
-                      className={`thumbnail-button flex-shrink-0 relative w-28 h-28 rounded-xl overflow-hidden transition-all duration-300 ${
+                      className={`thumbnail-button flex-shrink-0 relative w-28 h-28 rounded-xl overflow-hidden transition-all duration-300 snap-start ${
                         selectedImageIndex === idx 
                           ? 'thumbnail-active ring-4 ring-indigo-500 shadow-2xl shadow-indigo-500/50 scale-105' 
-                          : 'thumbnail-inactive ring-2 ring-white/10 hover:ring-indigo-400/50 hover:scale-102'
+                          : 'thumbnail-inactive ring-2 ring-white/10'
                       }`}
                       style={{ boxSizing: 'content-box' }}
                     >
@@ -321,18 +343,25 @@ export default function ModelDetailPage() {
       {/* Custom scrollbar styles */}
       <style jsx global>{`
         /* Horizontal scrollbar for gallery */
-        .overflow-x-auto::-webkit-scrollbar {
-          height: 8px;
+        .thumbnails-scroll-container::-webkit-scrollbar {
+          height: 10px;
         }
-        .overflow-x-auto::-webkit-scrollbar-track {
-          background: transparent;
+        .thumbnails-scroll-container::-webkit-scrollbar-track {
+          background: rgba(30, 41, 59, 0.5);
+          border-radius: 5px;
         }
-        .overflow-x-auto::-webkit-scrollbar-thumb {
-          background: #6366f1;
-          border-radius: 4px;
+        .thumbnails-scroll-container::-webkit-scrollbar-thumb {
+          background: linear-gradient(90deg, #6366f1, #8b5cf6);
+          border-radius: 5px;
+          border: 2px solid rgba(30, 41, 59, 0.5);
         }
-        .overflow-x-auto::-webkit-scrollbar-thumb:hover {
-          background: #4f46e5;
+        .thumbnails-scroll-container::-webkit-scrollbar-thumb:hover {
+          background: linear-gradient(90deg, #4f46e5, #7c3aed);
+        }
+
+        /* Smooth scrolling for gallery */
+        .thumbnails-scroll-container {
+          scroll-behavior: smooth;
         }
 
         /* Vertical scrollbar for sidebar */

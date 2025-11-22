@@ -7,50 +7,22 @@ import { useFilterStore } from '@/store/useFilterStore';
 
 export function ModelGrid() {
   const [models, setModels] = useState<Model[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [allModels, setAllModels] = useState<Model[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [shouldAnimate, setShouldAnimate] = useState(true);
-  const hasLoadedOnce = useRef(false);
+  const [isInitialized, setIsInitialized] = useState(false);
   const filters = useFilterStore();
 
+  // Load all models once on mount
   useEffect(() => {
-    const fetchModels = async () => {
-      setLoading(true);
+    const loadModels = async () => {
       try {
-        // Fetch models from config.json
         const response = await fetch('/models/config.json');
         const config = await response.json();
-        let filteredModels = config.models || [];
-
-        // Apply filters
-        if (filters.category) {
-          filteredModels = filteredModels.filter((m: any) => 
-            m.category?.toLowerCase() === filters.category?.toLowerCase()
-          );
-        }
-
-        if (filters.tags && filters.tags.length > 0) {
-          filteredModels = filteredModels.filter((m: any) =>
-            filters.tags?.some(tag => m.tags?.includes(tag))
-          );
-        }
-
-        if (filters.search) {
-          const searchLower = filters.search.toLowerCase();
-          filteredModels = filteredModels.filter((m: any) =>
-            m.title?.toLowerCase().includes(searchLower) ||
-            m.description?.toLowerCase().includes(searchLower) ||
-            m.tags?.some((tag: string) => tag.toLowerCase().includes(searchLower))
-          );
-        }
-
-        if (filters.featured) {
-          filteredModels = filteredModels.filter((m: any) => m.featured === true);
-        }
-
-        // Convert to Model type
-        const mappedModels: Model[] = filteredModels.map((m: any) => ({
+        
+        // Map to Model type
+        const mappedModels: Model[] = (config.models || []).map((m: any) => ({
           id: m.id,
           title: m.title,
           slug: m.slug,
@@ -75,28 +47,72 @@ export function ModelGrid() {
           updatedAt: new Date(),
         }));
 
+        setAllModels(mappedModels);
+        setIsInitialized(true);
+      } catch (error) {
+        console.error('Error loading models:', error);
+        setAllModels([]);
+        setIsInitialized(true);
+      }
+    };
+
+    loadModels();
+  }, []);
+
+  // Filter and paginate models
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    const filterModels = () => {
+      try {
+        let filteredModels = [...allModels];
+
+        // Apply filters
+        if (filters.category) {
+          filteredModels = filteredModels.filter((m: any) => 
+            m.category?.toLowerCase() === filters.category?.toLowerCase()
+          );
+        }
+
+        if (filters.tags && filters.tags.length > 0) {
+          filteredModels = filteredModels.filter((m: any) =>
+            filters.tags?.some(tag => m.tags?.includes(tag))
+          );
+        }
+
+        if (filters.search) {
+          const searchLower = filters.search.toLowerCase();
+          filteredModels = filteredModels.filter((m) =>
+            m.title?.toLowerCase().includes(searchLower) ||
+            m.description?.toLowerCase().includes(searchLower) ||
+            m.tags?.some((tag: string) => tag.toLowerCase().includes(searchLower))
+          );
+        }
+
+        if (filters.featured) {
+          filteredModels = filteredModels.filter((m) => m.featured === true);
+        }
+
         // Pagination
         const itemsPerPage = 9;
         const startIndex = (page - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
-        const paginatedModels = mappedModels.slice(startIndex, endIndex);
+        const paginatedModels = filteredModels.slice(startIndex, endIndex);
 
         setModels(paginatedModels);
-        setTotalPages(Math.ceil(mappedModels.length / itemsPerPage));
+        setTotalPages(Math.ceil(filteredModels.length / itemsPerPage));
       } catch (error) {
-        console.error('Error fetching models:', error);
-      } finally {
-        setLoading(false);
-        hasLoadedOnce.current = true;
+        console.error('Error filtering models:', error);
+        setModels([]);
       }
     };
 
-    fetchModels();
-  }, [filters, page]);
+    filterModels();
+  }, [filters, page, allModels, isInitialized]);
 
   // Disable animation after first load to prevent re-triggering
   useEffect(() => {
-    if (shouldAnimate && !loading && models.length > 0) {
+    if (shouldAnimate && models.length > 0) {
       // Wait for animation to complete (longest delay + animation duration)
       const maxDelay = (models.length - 1) * 0.1;
       const animationDuration = 0.6;
@@ -108,21 +124,11 @@ export function ModelGrid() {
 
       return () => clearTimeout(timer);
     }
-  }, [shouldAnimate, loading, models.length]);
+  }, [shouldAnimate, models.length]);
 
-  if (loading && !hasLoadedOnce.current) {
-    return (
-      <div id="grid-loading" className="grid-loading flex items-center justify-center py-20">
-        <div className="loading-content text-center">
-          <div className="loading-spinner-wrapper relative">
-            <div className="loading-spinner animate-spin rounded-full h-16 w-16 border-4 border-indigo-500/30 border-t-indigo-500 mx-auto"></div>
-            <div className="loading-pulse animate-ping absolute inset-0 rounded-full h-16 w-16 border-4 border-indigo-500 opacity-20"></div>
-          </div>
-          <p className="loading-text mt-6 text-slate-300 text-lg font-medium">Loading amazing 3D models...</p>
-          <p className="loading-subtext text-slate-500 text-sm">This won&apos;t take long</p>
-        </div>
-      </div>
-    );
+  // Don't show "no models" until initialized
+  if (!isInitialized) {
+    return null;
   }
 
   if (models.length === 0) {
