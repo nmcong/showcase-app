@@ -182,3 +182,14 @@ h1, h2, h3, h4, h5, h6 {
   scrollbar-width: thin;
   scrollbar-color: #6366f1 #1e293b;
 }
+
+/* Featured large card styling */
+.featured-large {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+.featured-large:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.3);
+}

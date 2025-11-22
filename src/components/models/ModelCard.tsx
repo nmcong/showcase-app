@@ -6,14 +6,15 @@ import { Model } from '@/types';
 
 interface ModelCardProps {
   model: Model & { averageRating?: number; commentsCount?: number };
+  isFeaturedLarge?: boolean;
 }
 
-export function ModelCard({ model }: ModelCardProps) {
+export function ModelCard({ model, isFeaturedLarge = false }: ModelCardProps) {
   return (
     <Link href={`/models/${model.slug}`} className="model-card-link group" data-model-id={model.id} data-model-slug={model.slug}>
-      <article id={`model-card-${model.id}`} className="model-card bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 overflow-hidden hover:shadow-2xl hover:shadow-indigo-500/20 hover:bg-slate-900/70 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 hover:border-indigo-500/30">
+      <article id={`model-card-${model.id}`} className={`model-card bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 overflow-hidden hover:shadow-2xl hover:shadow-indigo-500/20 hover:bg-slate-900/70 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 hover:border-indigo-500/30 ${isFeaturedLarge ? 'featured-large' : ''}`}>
         {/* Thumbnail */}
-        <div className="card-thumbnail relative h-56 bg-gradient-to-br from-slate-900 to-slate-800 overflow-hidden">
+        <div className={`card-thumbnail relative ${isFeaturedLarge ? 'h-64' : 'h-56'} bg-gradient-to-br from-slate-900 to-slate-800 overflow-hidden`}>
           <Image
             src={model.thumbnailUrl}
             alt={model.title}
@@ -33,12 +34,12 @@ export function ModelCard({ model }: ModelCardProps) {
         </div>
 
         {/* Content */}
-        <div className="card-content p-6">
-          <h3 className="card-title text-xl font-bold text-white mb-3 group-hover:text-indigo-400 transition-colors duration-300 line-clamp-2">
+        <div className={`card-content ${isFeaturedLarge ? 'p-7' : 'p-6'}`}>
+          <h3 className={`card-title ${isFeaturedLarge ? 'text-2xl' : 'text-xl'} font-bold text-white mb-3 group-hover:text-indigo-400 transition-colors duration-300 line-clamp-2`}>
             {model.title}
           </h3>
           
-          <p className="card-description text-sm text-slate-400 mb-4 line-clamp-2 leading-relaxed">
+          <p className={`card-description ${isFeaturedLarge ? 'text-base' : 'text-sm'} text-slate-400 mb-4 ${isFeaturedLarge ? 'line-clamp-3' : 'line-clamp-2'} leading-relaxed`}>
             {model.description}
           </p>
 

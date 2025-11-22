@@ -154,20 +154,26 @@ export function ModelGrid() {
   return (
     <div id="models-grid-wrapper" className="models-grid-wrapper">
       <div id="models-grid" className="models-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {models.map((model, index) => (
-          <div
-            key={model.id}
-            className={`grid-item ${shouldAnimate ? 'animate-fadeInUp' : ''}`}
-            data-model-index={index}
-            style={{
-              animationDelay: shouldAnimate ? `${index * 0.1}s` : undefined,
-              opacity: !shouldAnimate ? 1 : undefined,
-              transform: !shouldAnimate ? 'translateY(0)' : undefined
-            }}
-          >
-            <ModelCard model={model} />
-          </div>
-        ))}
+        {models.map((model, index) => {
+          // Only the first featured model gets large layout
+          const isFeaturedLarge = model.featured && index === models.findIndex(m => m.featured);
+          
+          return (
+            <div
+              key={model.id}
+              className={`grid-item ${isFeaturedLarge ? 'md:col-span-2 lg:col-span-2' : ''} ${shouldAnimate ? 'animate-fadeInUp' : ''}`}
+              data-model-index={index}
+              data-featured={isFeaturedLarge}
+              style={{
+                animationDelay: shouldAnimate ? `${index * 0.1}s` : undefined,
+                opacity: !shouldAnimate ? 1 : undefined,
+                transform: !shouldAnimate ? 'translateY(0)' : undefined
+              }}
+            >
+              <ModelCard model={model} isFeaturedLarge={isFeaturedLarge} />
+            </div>
+          );
+        })}
       </div>
 
       {/* Pagination */}
