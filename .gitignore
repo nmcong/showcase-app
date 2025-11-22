@@ -48,12 +48,8 @@ next-env.d.ts
 scripts/*.log
 backups/
 
-# SSL certificates (keep README only)
-# Ignore all certificate files in ca/ and subdirectories
-ca
-.idea
-# But allow README and .gitignore files
-!ca/README.md
-!ca/.gitignore
-!ca/**/README.md
-!ca/**/.gitignore
+# SSL certificates - completely ignored
+ca/
+
+# IDE files
+.idea/
