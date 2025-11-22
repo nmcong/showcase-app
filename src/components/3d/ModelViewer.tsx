@@ -37,16 +37,7 @@ export function ModelViewer({ modelUrl, className = '' }: ModelViewerProps) {
         <pointLight position={[-10, -10, -10]} />
         
         <Suspense fallback={null}>
-          <PresentationControls
-            global
-            config={{ mass: 2, tension: 500 }}
-            snap={true}
-            rotation={[0, 0, 0]}
-            polar={[-Math.PI / 3, Math.PI / 3]}
-            azimuth={[-Math.PI / 1.4, Math.PI / 2]}
-          >
-            <Model url={modelUrl} />
-          </PresentationControls>
+          <Model url={modelUrl} />
           <Environment preset="city" />
         </Suspense>
         
