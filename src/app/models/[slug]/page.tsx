@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ModelViewer } from '@/components/3d/ModelViewer';
 import Link from 'next/link';
@@ -40,6 +40,9 @@ export default function ModelDetailPage() {
   const [model, setModel] = useState<ModelDetail | null>(null);
   const [viewMode, setViewMode] = useState<'3d' | 'image'>('3d');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchModel = async () => {
@@ -61,6 +64,44 @@ export default function ModelDetailPage() {
 
     fetchModel();
   }, [params.slug, router]);
+
+  // Check scroll position to enable/disable arrow buttons
+  const checkScrollPosition = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
+  // Scroll gallery left
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+    }
+  };
+
+  // Scroll gallery right
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+    }
+  };
+
+  // Listen to scroll events to update button states
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      checkScrollPosition();
+      container.addEventListener('scroll', checkScrollPosition);
+      window.addEventListener('resize', checkScrollPosition);
+      
+      return () => {
+        container.removeEventListener('scroll', checkScrollPosition);
+        window.removeEventListener('resize', checkScrollPosition);
+      };
+    }
+  }, [model]);
 
   if (!model) {
     return null;
@@ -160,8 +201,40 @@ export default function ModelDetailPage() {
               </div>
 
               {/* Gallery Thumbnails - Fixed height with horizontal scroll */}
-              <div id="gallery-thumbnails" className="gallery-thumbnails flex-shrink-0 bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-4">
-                <div className="thumbnails-scroll-container flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory" style={{ scrollbarWidth: 'thin', scrollbarColor: '#6366f1 transparent' }}>
+              <div id="gallery-thumbnails" className="gallery-thumbnails flex-shrink-0 bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-4 relative">
+                {/* Left Arrow Button */}
+                <button
+                  onClick={scrollLeft}
+                  disabled={!canScrollLeft}
+                  className={`gallery-arrow gallery-arrow-left absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-slate-800/90 backdrop-blur-sm border border-white/20 flex items-center justify-center transition-all duration-300 hover:bg-slate-700 hover:scale-110 hover:shadow-lg hover:shadow-indigo-500/30 ${
+                    !canScrollLeft ? 'opacity-30 cursor-not-allowed' : 'opacity-100 cursor-pointer'
+                  }`}
+                  aria-label="Scroll gallery left"
+                >
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+
+                {/* Right Arrow Button */}
+                <button
+                  onClick={scrollRight}
+                  disabled={!canScrollRight}
+                  className={`gallery-arrow gallery-arrow-right absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-slate-800/90 backdrop-blur-sm border border-white/20 flex items-center justify-center transition-all duration-300 hover:bg-slate-700 hover:scale-110 hover:shadow-lg hover:shadow-indigo-500/30 ${
+                    !canScrollRight ? 'opacity-30 cursor-not-allowed' : 'opacity-100 cursor-pointer'
+                  }`}
+                  aria-label="Scroll gallery right"
+                >
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+
+                <div 
+                  ref={scrollContainerRef}
+                  className="thumbnails-scroll-container flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory" 
+                  style={{ scrollbarWidth: 'thin', scrollbarColor: '#6366f1 transparent' }}
+                >
                   {allMedia.map((media, idx) => (
                     <button
                       key={idx}
