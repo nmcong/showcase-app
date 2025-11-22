@@ -40,9 +40,10 @@ echo "================================================"
 if [ -d "$APP_INSTALL_PATH/.git" ]; then
     echo "Updating existing repository..."
     cd $APP_INSTALL_PATH
+    # Clean any local changes
+    git clean -fd
     git fetch origin
     git reset --hard origin/$GIT_BRANCH
-    git pull origin $GIT_BRANCH
 else
     echo "Cloning repository..."
     sudo rm -rf $APP_INSTALL_PATH
@@ -54,10 +55,28 @@ echo "✓ Code updated"
 
 echo ""
 echo "================================================"
-echo "Creating Environment File"
+echo "Fixing Prisma Schema"
 echo "================================================"
 
-# Create .env.local
+# Ensure datasource has url property (fix for schema)
+if ! grep -q 'url.*=.*env("DATABASE_URL")' $APP_INSTALL_PATH/prisma/schema.prisma; then
+    echo "Adding DATABASE_URL to Prisma schema..."
+    sudo sed -i '/^datasource db {/,/^}/ s/provider = "postgresql"/provider = "postgresql"\n  url      = env("DATABASE_URL")/' $APP_INSTALL_PATH/prisma/schema.prisma
+fi
+
+echo "✓ Prisma schema verified"
+
+echo ""
+echo "================================================"
+echo "Creating Environment Files"
+echo "================================================"
+
+# Create .env for Prisma CLI
+sudo tee $APP_INSTALL_PATH/.env > /dev/null << ENVFILE
+DATABASE_URL="postgresql://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME?schema=public"
+ENVFILE
+
+# Create .env.local for Next.js
 sudo tee $APP_INSTALL_PATH/.env.local > /dev/null << ENVFILE
 # Database
 DATABASE_URL="postgresql://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME?schema=public"
@@ -73,7 +92,7 @@ NEXT_PUBLIC_APP_URL="https://$APP_DOMAIN"
 NODE_ENV="$NODE_ENV"
 ENVFILE
 
-echo "✓ Environment file created"
+echo "✓ Environment files created"
 
 echo ""
 echo "================================================"
