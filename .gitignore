@@ -53,3 +53,4 @@ ca/
 
 # IDE files
 .idea/
+.claude/
