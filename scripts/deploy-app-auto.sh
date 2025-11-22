@@ -100,23 +100,26 @@ echo "Verifying Database Credentials"
 echo "================================================"
 
 # Fix app database user password to ensure it matches
-sudo -u postgres psql << 'DBFIX'
-DO $$
+sudo -u postgres psql << EOF
+DO \$\$
 BEGIN
   IF EXISTS (SELECT FROM pg_catalog.pg_user WHERE usename = '$DB_USER') THEN
     ALTER USER $DB_USER WITH PASSWORD '$DB_PASSWORD';
   END IF;
 END
-$$;
+\$\$;
 
 GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;
-\c $DB_NAME
+EOF
+
+# Grant schema privileges separately
+sudo -u postgres psql -d $DB_NAME << EOF
 GRANT ALL ON SCHEMA public TO $DB_USER;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO $DB_USER;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO $DB_USER;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO $DB_USER;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO $DB_USER;
-DBFIX
+EOF
 
 # Test database connection
 echo "Testing app database connection..."
@@ -253,7 +256,9 @@ if [ -n "$VPS_PASSWORD" ]; then
     
     sshpass -p "$VPS_PASSWORD" ssh -p "$VPS_PORT" \
         "$VPS_USER@$VPS_HOST" \
-        "export APP_INSTALL_PATH='$APP_INSTALL_PATH' && \
+        "export LC_ALL=C.UTF-8 && \
+         export LANG=C.UTF-8 && \
+         export APP_INSTALL_PATH='$APP_INSTALL_PATH' && \
          export APP_DOMAIN='$APP_DOMAIN' && \
          export APP_PORT='$APP_PORT' && \
          export GIT_REPO_URL='$GIT_REPO_URL' && \
@@ -276,7 +281,9 @@ else
     
     ssh -i "$VPS_SSH_KEY" -p "$VPS_PORT" \
         "$VPS_USER@$VPS_HOST" \
-        "export APP_INSTALL_PATH='$APP_INSTALL_PATH' && \
+        "export LC_ALL=C.UTF-8 && \
+         export LANG=C.UTF-8 && \
+         export APP_INSTALL_PATH='$APP_INSTALL_PATH' && \
          export APP_DOMAIN='$APP_DOMAIN' && \
          export APP_PORT='$APP_PORT' && \
          export GIT_REPO_URL='$GIT_REPO_URL' && \
