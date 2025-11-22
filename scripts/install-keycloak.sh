@@ -45,15 +45,33 @@ echo "Downloading Keycloak $KEYCLOAK_VERSION..."
 wget -q --show-progress \
     https://github.com/keycloak/keycloak/releases/download/$KEYCLOAK_VERSION/keycloak-$KEYCLOAK_VERSION.tar.gz
 
+# Remove existing Keycloak installation if exists
+if [ -d "$KEYCLOAK_INSTALL_PATH" ]; then
+    echo "Removing existing Keycloak installation..."
+    sudo systemctl stop keycloak || true
+    sudo rm -rf $KEYCLOAK_INSTALL_PATH
+fi
+
 # Extract
 echo "Extracting..."
 sudo tar -xzf keycloak-$KEYCLOAK_VERSION.tar.gz -C /opt/
-sudo mv /opt/keycloak-$KEYCLOAK_VERSION $KEYCLOAK_INSTALL_PATH
+
+# Move to final location
+if [ -d "/opt/keycloak-$KEYCLOAK_VERSION" ]; then
+    sudo mv /opt/keycloak-$KEYCLOAK_VERSION $KEYCLOAK_INSTALL_PATH
+else
+    echo "✗ Error: Extracted Keycloak directory not found"
+    echo "Contents of /opt/:"
+    ls -la /opt/ | grep keycloak
+    exit 1
+fi
 
 # Cleanup
 rm keycloak-$KEYCLOAK_VERSION.tar.gz
 
 echo "✓ Keycloak extracted to $KEYCLOAK_INSTALL_PATH"
+echo "Directory structure:"
+ls -la $KEYCLOAK_INSTALL_PATH/ | head -n 20
 
 echo ""
 echo "================================================"
@@ -62,6 +80,13 @@ echo "================================================"
 
 # Create keycloak user
 sudo useradd -r -s /bin/false keycloak || true
+
+# Check directory structure and create conf directory if needed
+if [ ! -d "$KEYCLOAK_INSTALL_PATH/conf" ]; then
+    echo "Creating conf directory..."
+    sudo mkdir -p $KEYCLOAK_INSTALL_PATH/conf
+fi
+
 sudo chown -R keycloak:keycloak $KEYCLOAK_INSTALL_PATH
 
 # Create configuration file
