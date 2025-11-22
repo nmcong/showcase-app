@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { ModelViewer } from '@/components/3d/ModelViewer';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ShoppingCart, Box, Star } from 'lucide-react';
 
 interface ModelDetail {
   id: string;
@@ -43,6 +44,9 @@ export default function ModelDetailPage() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeftPos = useRef(0);
 
   useEffect(() => {
     const fetchModel = async () => {
@@ -65,7 +69,7 @@ export default function ModelDetailPage() {
     fetchModel();
   }, [params.slug, router]);
 
-  // Check scroll position to enable/disable arrow buttons
+  // Check scroll position for arrow buttons
   const checkScrollPosition = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
@@ -74,21 +78,52 @@ export default function ModelDetailPage() {
     }
   };
 
-  // Scroll gallery left
-  const scrollLeft = () => {
+  // Arrow button handlers
+  const scrollToLeft = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({ left: -300, behavior: 'smooth' });
     }
   };
 
-  // Scroll gallery right
-  const scrollRight = () => {
+  const scrollToRight = () => {
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollBy({ left: 300, behavior: 'smooth' });
     }
   };
 
-  // Listen to scroll events to update button states
+  // Drag to scroll handlers
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!scrollContainerRef.current) return;
+    isDragging.current = true;
+    startX.current = e.pageX - scrollContainerRef.current.offsetLeft;
+    scrollLeftPos.current = scrollContainerRef.current.scrollLeft;
+    scrollContainerRef.current.style.cursor = 'grabbing';
+    scrollContainerRef.current.style.userSelect = 'none';
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging.current || !scrollContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX.current) * 2; // Scroll speed multiplier
+    scrollContainerRef.current.scrollLeft = scrollLeftPos.current - walk;
+  };
+
+  const handleMouseUp = () => {
+    if (!scrollContainerRef.current) return;
+    isDragging.current = false;
+    scrollContainerRef.current.style.cursor = 'grab';
+    scrollContainerRef.current.style.userSelect = 'auto';
+  };
+
+  const handleMouseLeave = () => {
+    if (!scrollContainerRef.current) return;
+    isDragging.current = false;
+    scrollContainerRef.current.style.cursor = 'grab';
+    scrollContainerRef.current.style.userSelect = 'auto';
+  };
+
+  // Listen to scroll events to update arrow button states
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (container) {
@@ -200,39 +235,41 @@ export default function ModelDetailPage() {
                 </div>
               </div>
 
-              {/* Gallery Thumbnails - Fixed height with horizontal scroll */}
-              <div id="gallery-thumbnails" className="gallery-thumbnails flex-shrink-0 bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-4 relative">
+              {/* Gallery Thumbnails - Arrows + Drag to scroll */}
+              <div id="gallery-thumbnails" className="gallery-thumbnails group flex-shrink-0 bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-4 relative">
                 {/* Left Arrow Button */}
-                <button
-                  onClick={scrollLeft}
-                  disabled={!canScrollLeft}
-                  className={`gallery-arrow gallery-arrow-left absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-slate-800/90 backdrop-blur-sm border border-white/20 flex items-center justify-center transition-all duration-300 hover:bg-slate-700 hover:scale-110 hover:shadow-lg hover:shadow-indigo-500/30 ${
-                    !canScrollLeft ? 'opacity-30 cursor-not-allowed' : 'opacity-100 cursor-pointer'
-                  }`}
-                  aria-label="Scroll gallery left"
-                >
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
+                {canScrollLeft && (
+                  <button
+                    onClick={scrollToLeft}
+                    className="gallery-arrow gallery-arrow-left absolute left-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-slate-800/90 backdrop-blur-sm border border-white/20 flex items-center justify-center transition-all duration-300 hover:bg-slate-700 hover:scale-110 hover:shadow-lg hover:shadow-indigo-500/30 opacity-70 hover:opacity-100 cursor-pointer"
+                    aria-label="Scroll gallery left"
+                  >
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                )}
 
                 {/* Right Arrow Button */}
-                <button
-                  onClick={scrollRight}
-                  disabled={!canScrollRight}
-                  className={`gallery-arrow gallery-arrow-right absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-slate-800/90 backdrop-blur-sm border border-white/20 flex items-center justify-center transition-all duration-300 hover:bg-slate-700 hover:scale-110 hover:shadow-lg hover:shadow-indigo-500/30 ${
-                    !canScrollRight ? 'opacity-30 cursor-not-allowed' : 'opacity-100 cursor-pointer'
-                  }`}
-                  aria-label="Scroll gallery right"
-                >
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
+                {canScrollRight && (
+                  <button
+                    onClick={scrollToRight}
+                    className="gallery-arrow gallery-arrow-right absolute right-2 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-slate-800/90 backdrop-blur-sm border border-white/20 flex items-center justify-center transition-all duration-300 hover:bg-slate-700 hover:scale-110 hover:shadow-lg hover:shadow-indigo-500/30 opacity-70 hover:opacity-100 cursor-pointer"
+                    aria-label="Scroll gallery right"
+                  >
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                )}
 
                 <div 
                   ref={scrollContainerRef}
-                  className="thumbnails-scroll-container flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory" 
+                  onMouseDown={handleMouseDown}
+                  onMouseMove={handleMouseMove}
+                  onMouseUp={handleMouseUp}
+                  onMouseLeave={handleMouseLeave}
+                  className="thumbnails-scroll-container flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory cursor-grab active:cursor-grabbing" 
                   style={{ scrollbarWidth: 'thin', scrollbarColor: '#6366f1 transparent' }}
                 >
                   {allMedia.map((media, idx) => (
@@ -241,8 +278,10 @@ export default function ModelDetailPage() {
                       data-media-type={media.type}
                       data-media-index={idx}
                       onClick={() => {
-                        setSelectedImageIndex(idx);
-                        setViewMode(media.type === '3d' ? '3d' : 'image');
+                        if (!isDragging.current) {
+                          setSelectedImageIndex(idx);
+                          setViewMode(media.type === '3d' ? '3d' : 'image');
+                        }
                       }}
                       className={`thumbnail-button flex-shrink-0 relative w-28 h-28 rounded-xl overflow-hidden transition-all duration-300 snap-start ${
                         selectedImageIndex === idx 
@@ -252,9 +291,9 @@ export default function ModelDetailPage() {
                       style={{ boxSizing: 'content-box' }}
                     >
                       {media.type === '3d' ? (
-                        <div className="w-full h-full bg-gradient-to-br from-indigo-600 to-purple-700 flex items-center justify-center">
+                        <div className="w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
                           <div className="text-center">
-                            <span className="text-3xl">🎮</span>
+                            <Box className="w-8 h-8 text-white mx-auto" strokeWidth={2} />
                             <p className="text-white text-xs font-bold mt-1">3D Model</p>
                           </div>
                         </div>
@@ -284,8 +323,9 @@ export default function ModelDetailPage() {
                 {/* Title */}
                 <div id="model-title-section" className="model-title-section bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
                   {model.featured && (
-                    <div className="inline-block bg-gradient-to-r from-amber-400 to-orange-500 text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg mb-3">
-                      ⭐ Featured
+                    <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg mb-3">
+                      <Star className="w-4 h-4 fill-yellow-300 text-yellow-300" />
+                      <span>Featured</span>
                     </div>
                   )}
                   <h1 className="text-2xl font-bold text-white mb-3">{model.title}</h1>
@@ -404,7 +444,7 @@ export default function ModelDetailPage() {
                       className="purchase-button block w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-center py-4 px-6 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-indigo-500/50 transition-all duration-300 transform hover:-translate-y-1"
                     >
                       <div className="flex items-center justify-center gap-3">
-                        <span className="text-2xl">🛒</span>
+                        <ShoppingCart className="w-6 h-6" />
                         <span>Get on Fab.com</span>
                       </div>
                       <div className="text-xs opacity-90 mt-1">View pricing & purchase</div>

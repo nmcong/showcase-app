@@ -373,7 +373,7 @@ export function ModelViewer({ modelUrl, className = '', texturesPath, enableText
       <Canvas
         camera={{ position: [0, 0, 1.5], fov: 50 }}
         style={{ 
-          background: '#000000',
+          background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
           userSelect: 'none',
           width: '100%',
           height: '100%'

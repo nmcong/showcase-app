@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Model } from '@/types';
+import { Star } from 'lucide-react';
 
 interface ModelCardProps {
   model: Model & { averageRating?: number; commentsCount?: number };
@@ -24,8 +25,9 @@ export function ModelCard({ model, isFeaturedLarge = false }: ModelCardProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           
           {model.featured && (
-            <div className="absolute top-3 right-3 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-pulse">
-              ⭐ Featured
+            <div className="absolute top-3 right-3 flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-pulse">
+              <Star className="w-3.5 h-3.5 fill-yellow-300 text-yellow-300" />
+              <span>Featured</span>
             </div>
           )}
           
