@@ -450,9 +450,10 @@ Nếu gặp vấn đề:
 
 ## 📚 Additional Resources
 
-- [VPS Deployment Guide](../VPS_DEPLOYMENT_GUIDE.md)
-- [Keycloak Setup](../KEYCLOAK_SETUP.md)
-- [Version Compatibility](../VERSION_COMPATIBILITY.md)
+- [VPS Deployment Guide](../docs/04-VPS_DEPLOYMENT_GUIDE.md)
+- [Keycloak Setup](../docs/05-KEYCLOAK_SETUP.md)
+- [Version Compatibility](../docs/08-VERSION_COMPATIBILITY.md)
+- [All Documentation](../docs/README.md)
 
 ---
 

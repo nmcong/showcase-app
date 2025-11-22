@@ -284,16 +284,27 @@ MIT License - feel free to use this project for your own showcase!
 
 ## Documentation
 
-Comprehensive guides available:
-- 📖 **[Quick Start Guide](./QUICKSTART.md)** - Get started in 5 minutes
-- 🔐 **[Keycloak Setup](./KEYCLOAK_SETUP.md)** - Authentication configuration
-- 🚀 **[VPS Deployment](./VPS_DEPLOYMENT_GUIDE.md)** - Deploy to your own server
-- 🤖 **[Automated Deployment](./scripts/README.md)** - One-command deployment scripts
-- 🐳 **[No Docker Guide](./NO_DOCKER_DEPLOYMENT.md)** - Deploy without Docker (optimal for 4GB RAM)
-- 📦 **[Deployment Options](./DEPLOYMENT.md)** - Various deployment methods
-- 🎨 **[3D Models Guide](./3D_MODELS_GUIDE.md)** - Prepare and optimize 3D models
-- 🔄 **[Keycloak 26.4.5 Migration](./KEYCLOAK_26_MIGRATION.md)** - Latest Keycloak version
-- 📊 **[Version Compatibility](./VERSION_COMPATIBILITY.md)** - Component versions
+Comprehensive guides available (organized by reading priority):
+
+### 🚀 Getting Started
+1. 📖 **[Quick Start Guide](./docs/01-QUICKSTART.md)** - Get started in 5 minutes
+2. 🐳 **[No Docker Deployment](./docs/02-NO_DOCKER_DEPLOYMENT.md)** - Deploy without Docker (optimal for 4GB RAM)
+3. 🤖 **[Deployment Scripts Summary](./docs/03-DEPLOYMENT_SCRIPTS_SUMMARY.md)** - Automated deployment overview
+
+### 🔧 Deployment Guides
+4. 🚀 **[VPS Deployment Guide](./docs/04-VPS_DEPLOYMENT_GUIDE.md)** - Complete VPS setup (manual)
+5. 💻 **[Automated Deployment Scripts](./scripts/README.md)** - One-command deployment
+6. 📦 **[Other Deployment Options](./docs/09-DEPLOYMENT.md)** - Vercel, Railway, Docker, etc.
+
+### 🔐 Authentication
+7. 🔑 **[Keycloak Setup](./docs/05-KEYCLOAK_SETUP.md)** - Authentication configuration
+8. 🔄 **[Keycloak 26.4.5 Migration](./docs/06-KEYCLOAK_26_MIGRATION.md)** - Latest Keycloak version
+
+### 📚 Additional Resources
+9. 🎨 **[3D Models Guide](./docs/07-3D_MODELS_GUIDE.md)** - Prepare and optimize 3D models
+10. 📊 **[Version Compatibility](./docs/08-VERSION_COMPATIBILITY.md)** - Component versions
+11. 📝 **[Changelog](./docs/10-CHANGELOG.md)** - Version history
+12. 🔄 **[Updates Summary](./docs/11-UPDATES_SUMMARY.md)** - Recent updates
 
 ## Support
 
@@ -332,6 +343,12 @@ For issues and questions:
 - ✅ Advanced filtering
 - ✅ Marketplace links
 
+## 📖 Complete Documentation
+
+All documentation is organized in [`docs/`](./docs/) folder:
+
+**→ Start here**: [`docs/README.md`](./docs/README.md) - Complete documentation index with reading order
+
 ## Credits
 
 Built with ❤️ using:
@@ -340,3 +357,14 @@ Built with ❤️ using:
 - [Prisma](https://www.prisma.io/)
 - [Keycloak](https://www.keycloak.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
+
+## License
+
+MIT License - feel free to use this project for your own showcase!
+
+## Support
+
+For issues and questions:
+- 📚 Check [`docs/README.md`](./docs/README.md) for complete documentation
+- 💬 Open an issue on GitHub
+- 📖 Review troubleshooting sections in relevant guides
