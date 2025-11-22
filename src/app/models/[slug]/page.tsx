@@ -141,7 +141,11 @@ export default function ModelDetailPage() {
                   style={{ userSelect: 'none' }}
                 >
                   {viewMode === '3d' ? (
-                    <ModelViewer modelUrl={model.modelPath} />
+                    <ModelViewer 
+                      modelUrl={model.modelPath} 
+                      texturesPath="/models/KatanaBamboo"
+                      enableTextureToggle={true}
+                    />
                   ) : (
                     <div className="relative w-full h-full bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center p-4">
                       <Image
