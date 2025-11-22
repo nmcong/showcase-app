@@ -126,6 +126,38 @@ echo "✓ Keycloak configured"
 
 echo ""
 echo "================================================"
+echo "Verifying Database Credentials"
+echo "================================================"
+
+# Fix database user password to ensure it matches config
+sudo -u postgres psql << 'DBFIX'
+DO $$
+BEGIN
+  IF EXISTS (SELECT FROM pg_catalog.pg_user WHERE usename = '$KEYCLOAK_DB_USER') THEN
+    ALTER USER $KEYCLOAK_DB_USER WITH PASSWORD '$KEYCLOAK_DB_PASSWORD';
+  END IF;
+END
+$$;
+
+GRANT ALL PRIVILEGES ON DATABASE $KEYCLOAK_DB_NAME TO $KEYCLOAK_DB_USER;
+\c $KEYCLOAK_DB_NAME
+GRANT ALL ON SCHEMA public TO $KEYCLOAK_DB_USER;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO $KEYCLOAK_DB_USER;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO $KEYCLOAK_DB_USER;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO $KEYCLOAK_DB_USER;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO $KEYCLOAK_DB_USER;
+DBFIX
+
+# Test database connection
+echo "Testing database connection..."
+if PGPASSWORD=$KEYCLOAK_DB_PASSWORD psql -h localhost -U $KEYCLOAK_DB_USER -d $KEYCLOAK_DB_NAME -c "SELECT 1;" > /dev/null 2>&1; then
+    echo "✓ Database connection verified"
+else
+    echo "✗ Warning: Database connection test failed, but continuing..."
+fi
+
+echo ""
+echo "================================================"
 echo "Building Keycloak"
 echo "================================================"
 

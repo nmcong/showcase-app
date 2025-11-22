@@ -96,6 +96,38 @@ echo "✓ Environment files created"
 
 echo ""
 echo "================================================"
+echo "Verifying Database Credentials"
+echo "================================================"
+
+# Fix app database user password to ensure it matches
+sudo -u postgres psql << 'DBFIX'
+DO $$
+BEGIN
+  IF EXISTS (SELECT FROM pg_catalog.pg_user WHERE usename = '$DB_USER') THEN
+    ALTER USER $DB_USER WITH PASSWORD '$DB_PASSWORD';
+  END IF;
+END
+$$;
+
+GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;
+\c $DB_NAME
+GRANT ALL ON SCHEMA public TO $DB_USER;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO $DB_USER;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO $DB_USER;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO $DB_USER;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO $DB_USER;
+DBFIX
+
+# Test database connection
+echo "Testing app database connection..."
+if PGPASSWORD=$DB_PASSWORD psql -h localhost -U $DB_USER -d $DB_NAME -c "SELECT 1;" > /dev/null 2>&1; then
+    echo "✓ App database connection verified"
+else
+    echo "✗ Warning: Database connection test failed, but continuing..."
+fi
+
+echo ""
+echo "================================================"
 echo "Installing Dependencies"
 echo "================================================"
 

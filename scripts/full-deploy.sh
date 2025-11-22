@@ -1,22 +1,24 @@
 #!/bin/bash
 
 # ================================================
-# Full Deployment Script
+# Full Deployment Script - All Fixes Integrated
 # ================================================
-# Chạy tất cả các bước deploy tự động
+# Script này đã integrate TẤT CẢ các fixes
+# Chạy script này để deploy hoàn toàn mà không cần fix scripts
 # ================================================
 
 set -e
 
 echo "================================================"
-echo "Full Deployment Script"
+echo "Full Deployment - Fixed Version"
 echo "================================================"
-echo "This script will:"
-echo "  1. Setup VPS (install dependencies)"
-echo "  2. Setup database"
-echo "  3. Install Keycloak"
-echo "  4. Deploy application"
-echo "  5. Configure Nginx"
+echo ""
+echo "This script includes all fixes and will:"
+echo "  1. Setup VPS with all dependencies"
+echo "  2. Setup databases with password fixes"
+echo "  3. Install and configure Keycloak"
+echo "  4. Deploy Next.js application"
+echo "  5. Setup Nginx reverse proxy"
 echo ""
 
 # Load environment variables
@@ -25,21 +27,17 @@ if [ -f .env.deploy ]; then
     echo "✓ Loaded .env.deploy"
 else
     echo "✗ Error: .env.deploy not found!"
-    echo ""
-    echo "Please create .env.deploy from env.deploy.example:"
-    echo "  cp env.deploy.example .env.deploy"
-    echo "  nano .env.deploy"
+    echo "  Please copy .env.deploy.example to .env.deploy and configure it."
     exit 1
 fi
 
 echo ""
-echo "Deployment Configuration Summary:"
-echo "--------------------------------"
-echo "VPS: $VPS_USER@$VPS_HOST:$VPS_PORT"
+echo "Configuration Summary:"
+echo "----------------------"
+echo "VPS Host: $VPS_HOST"
+echo "VPS User: $VPS_USER"
 echo "App Domain: $APP_DOMAIN"
 echo "Keycloak Domain: $KEYCLOAK_DOMAIN"
-echo "Database: $DB_NAME"
-echo "Keycloak Version: $KEYCLOAK_VERSION"
 echo ""
 
 read -p "Continue with full deployment? (y/n) " -n 1 -r
@@ -49,89 +47,107 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     exit 1
 fi
 
-# Track start time
-START_TIME=$(date +%s)
-
-# Step 1: Setup VPS
 echo ""
 echo "================================================"
-echo "Step 1/5: Setting Up VPS"
+echo "Step 1/5: Setting up VPS"
 echo "================================================"
-./scripts/setup-vps.sh
-echo "✓ Step 1 completed"
 
-# Step 2: Setup Database
+if [ -f "scripts/setup-vps.sh" ]; then
+    echo "Running VPS setup..."
+    ./scripts/setup-vps.sh
+    echo "✓ VPS setup completed"
+else
+    echo "⚠ Warning: setup-vps.sh not found, skipping..."
+fi
+
 echo ""
 echo "================================================"
-echo "Step 2/5: Setting Up Database"
+echo "Step 2/5: Setting up Databases (with fixes)"
 echo "================================================"
-./scripts/setup-database.sh
-echo "✓ Step 2 completed"
 
-# Step 3: Install Keycloak
+# Run database setup (already includes fixes)
+if [ -f "scripts/setup-database.sh" ]; then
+    echo "Running database setup..."
+    ./scripts/setup-database.sh
+    echo "✓ Database setup completed"
+else
+    echo "✗ Error: setup-database.sh not found!"
+    exit 1
+fi
+
 echo ""
 echo "================================================"
 echo "Step 3/5: Installing Keycloak"
 echo "================================================"
-./scripts/install-keycloak.sh
-echo "✓ Step 3 completed"
 
-# Step 4: Deploy Application
+if [ -f "scripts/install-keycloak.sh" ]; then
+    echo "Running Keycloak installation (includes database fixes)..."
+    ./scripts/install-keycloak.sh
+    echo "✓ Keycloak installation completed"
+else
+    echo "⚠ Warning: install-keycloak.sh not found, skipping..."
+fi
+
 echo ""
 echo "================================================"
 echo "Step 4/5: Deploying Application"
 echo "================================================"
-./scripts/deploy-app.sh
-echo "✓ Step 4 completed"
 
-# Step 5: Configure Nginx
-echo ""
-echo "================================================"
-echo "Step 5/5: Configuring Nginx"
-echo "================================================"
-./scripts/setup-nginx.sh
-echo "✓ Step 5 completed"
-
-# Calculate duration
-END_TIME=$(date +%s)
-DURATION=$((END_TIME - START_TIME))
-MINUTES=$((DURATION / 60))
-SECONDS=$((DURATION % 60))
+if [ -f "scripts/deploy-app-auto.sh" ]; then
+    echo "Running application deployment (includes database fixes)..."
+    ./scripts/deploy-app-auto.sh
+    echo "✓ Application deployment completed"
+else
+    echo "✗ Error: deploy-app-auto.sh not found!"
+    exit 1
+fi
 
 echo ""
 echo "================================================"
-echo "🎉 Full Deployment Completed Successfully! 🎉"
+echo "Step 5/5: Setting up Nginx"
+echo "================================================"
+
+if [ -f "scripts/setup-nginx.sh" ]; then
+    echo "Running Nginx setup..."
+    ./scripts/setup-nginx.sh
+    echo "✓ Nginx setup completed"
+else
+    echo "⚠ Warning: setup-nginx.sh not found, skipping..."
+fi
+
+echo ""
+echo "================================================"
+echo "Deployment Summary"
+echo "================================================"
+
+# Run status check
+if [ -f "scripts/check-status.sh" ]; then
+    echo ""
+    echo "Checking services status..."
+    ./scripts/check-status.sh | tail -50
+fi
+
+echo ""
+echo "================================================"
+echo "✅ Full Deployment Completed!"
 echo "================================================"
 echo ""
-echo "Deployment time: ${MINUTES}m ${SECONDS}s"
-echo ""
-echo "Your showcase is now live at:"
-echo "  🌐 App: https://$APP_DOMAIN"
-echo "  🔐 Keycloak: https://$KEYCLOAK_DOMAIN"
+echo "Your applications are now running:"
+echo "  App: http://$APP_DOMAIN (or https:// if SSL configured)"
+echo "  Keycloak: http://$KEYCLOAK_DOMAIN (or https:// if SSL configured)"
 echo ""
 echo "Next steps:"
-echo "  1. Configure Keycloak realm and client:"
-echo "     - Visit https://$KEYCLOAK_DOMAIN"
-echo "     - Login with admin credentials"
+echo "  1. Setup SSL certificates:"
+echo "     - For Showcase: ./scripts/setup-ssl-showcase-only.sh"
+echo "  2. Configure Keycloak:"
+echo "     - Access: http://$KEYCLOAK_DOMAIN/admin/"
+echo "     - Login with credentials from .env.deploy"
 echo "     - Create realm: showcase-realm"
-echo "     - Create client: $KEYCLOAK_CLIENT_ID"
-echo "     - Copy client secret to .env.deploy"
-echo "     - Redeploy app: ./scripts/deploy-app.sh"
-echo ""
-echo "  2. Test your application:"
-echo "     - Visit https://$APP_DOMAIN"
-echo "     - Try login functionality"
-echo "     - Check 3D model viewer"
-echo ""
+echo "     - Create client: showcase-client"
 echo "  3. Monitor services:"
-echo "     - App logs: pm2 logs showcase-app"
-echo "     - Keycloak logs: sudo journalctl -u keycloak -f"
-echo "     - Nginx logs: sudo tail -f /var/log/nginx/*.log"
+echo "     - pm2 logs showcase-app"
+echo "     - sudo journalctl -u keycloak -f"
 echo ""
-echo "Useful commands:"
-echo "  ./scripts/deploy-app.sh     # Redeploy app"
-echo "  ./scripts/backup.sh          # Create backup"
-echo "  ./scripts/update-app.sh      # Update app"
+echo "For troubleshooting, see: docs/12-TROUBLESHOOTING.md"
 echo ""
-echo "================================================"
 

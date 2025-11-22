@@ -2,6 +2,22 @@
 
 Hướng dẫn sử dụng các scripts tự động deploy lên VPS (không dùng Docker).
 
+## 📦 Available Scripts (9 Essential Scripts)
+
+| Script | Purpose | When to Use |
+|--------|---------|-------------|
+| `full-deploy.sh` | 🚀 **Full deployment** | First deployment or complete re-deployment |
+| `setup-vps.sh` | Setup VPS environment | Install Node.js, PostgreSQL, Nginx, Java, PM2 |
+| `setup-database.sh` | Setup databases | Create databases and users |
+| `install-keycloak.sh` | Install Keycloak | Install & configure Keycloak 26.4.5 |
+| `deploy-app-auto.sh` | Deploy Next.js app | Deploy or update application |
+| `setup-nginx.sh` | Configure Nginx | Setup reverse proxy |
+| `setup-ssl-showcase-only.sh` | Setup SSL for showcase | Configure HTTPS with your certificates |
+| `check-status.sh` | Check services status | Monitor all services |
+| `backup.sh` | Backup data | Backup databases and files |
+
+**All scripts include integrated fixes** - No manual fixes needed!
+
 ## 📋 Yêu Cầu
 
 ### VPS Specifications
@@ -121,7 +137,7 @@ Cài đặt:
 ### Step 4: Deploy Application
 
 ```bash
-./scripts/deploy-app.sh
+./scripts/deploy-app-auto.sh
 ```
 
 Deploy:
@@ -142,29 +158,28 @@ Cấu hình:
 - SSL certificates (Let's Encrypt)
 - Auto-renewal
 
-### Step 6: Setup SSL for Keycloak (Optional - Using Your Own Certificates)
+### Step 6: Setup SSL for Showcase (Optional)
 
 ```bash
-./scripts/setup-ssl-keycloak.sh
+./scripts/setup-ssl-showcase-only.sh
 ```
 
 **Sử dụng khi:**
-- Bạn có SSL certificate riêng (không dùng Let's Encrypt)
+- Bạn có SSL certificate riêng cho showcase domain
 - Cần setup HTTPS với custom certificates
 
 **Yêu cầu:**
-- Có file certificates trong thư mục `ca/`:
-  - `private_key_vibytes-tech.txt`
-  - `rootca_vibytes-tech.txt`
-  - `certificate_vibytes-tech.txt` (optional)
+- Có file certificates trong thư mục `ca/showcase/`:
+  - `private_key_showcase-vibytes-tech.txt`
+  - `certificate_showcase-vibytes-tech.txt`
+  - `rootca_showcase-vibytes-tech.txt` (CA bundle)
 
 Script sẽ:
+- ✅ Validate certificates
 - ✅ Upload certificates lên VPS
 - ✅ Configure Nginx với SSL
-- ✅ Update Keycloak config cho HTTPS
+- ✅ Setup HTTP to HTTPS redirect
 - ✅ Test SSL connection
-
-**Chi tiết:** Xem [docs/12-SSL_KEYCLOAK_SETUP.md](../docs/12-SSL_KEYCLOAK_SETUP.md)
 
 ## 🔧 Scripts Khác
 
@@ -181,11 +196,24 @@ Backup:
 - Application files
 - Nginx configs
 
+### Check Status
+
+```bash
+# Check all services status
+./scripts/check-status.sh
+```
+
+Check:
+- Keycloak service
+- Next.js app (PM2)
+- Nginx
+- PostgreSQL
+
 ### Update App
 
 ```bash
 # Update code và redeploy
-./scripts/deploy-app.sh
+./scripts/deploy-app-auto.sh
 ```
 
 ### View Logs
@@ -448,7 +476,7 @@ Password: <KEYCLOAK_ADMIN_PASSWORD>
 KEYCLOAK_CLIENT_SECRET=<client-secret-from-keycloak>
 
 # Redeploy app
-./scripts/deploy-app.sh
+./scripts/deploy-app-auto.sh
 ```
 
 ### 3. Test Application
@@ -474,15 +502,17 @@ Nếu gặp vấn đề:
 
 ## 📚 Additional Resources
 
+- [Complete Deployment Guide - Fixed Version](../docs/13-DEPLOYMENT-FIXED.md) - 🆕 Recommended!
+- [Troubleshooting Guide](../docs/12-TROUBLESHOOTING.md) - 🆕 All errors & solutions
 - [VPS Deployment Guide](../docs/04-VPS_DEPLOYMENT_GUIDE.md)
 - [Keycloak Setup](../docs/05-KEYCLOAK_SETUP.md)
-- [SSL Keycloak Setup](../docs/12-SSL_KEYCLOAK_SETUP.md)
 - [Version Compatibility](../docs/08-VERSION_COMPATIBILITY.md)
 - [All Documentation](../docs/README.md)
 
 ---
 
-**Scripts Version**: 1.0.0  
+**Scripts Version**: 2.0.0 (All fixes integrated)  
 **Last Updated**: November 22, 2025  
-**Compatible with**: Keycloak 26.4.5, Next.js 16, PostgreSQL 15+
+**Compatible with**: Keycloak 26.4.5, Next.js 16, PostgreSQL 15+  
+**9 Essential Scripts** - Cleaned & optimized
 
