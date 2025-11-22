@@ -13,8 +13,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        {children}
+      <body id="app-root" className="app-body">
+        <div id="app-wrapper" className="app-wrapper">
+          {children}
+        </div>
       </body>
     </html>
   );

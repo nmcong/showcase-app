@@ -67,10 +67,10 @@ export default function ModelDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-indigo-500/30 border-t-indigo-500 mx-auto"></div>
-          <p className="mt-4 text-slate-400">Loading model...</p>
+      <div id="loading-page" className="loading-page min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
+        <div className="loading-content text-center">
+          <div className="loading-spinner animate-spin rounded-full h-16 w-16 border-4 border-indigo-500/30 border-t-indigo-500 mx-auto"></div>
+          <p className="loading-text mt-4 text-slate-400">Loading model...</p>
         </div>
       </div>
     );
@@ -90,31 +90,31 @@ export default function ModelDetailPage() {
   ];
 
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
+    <div id="model-detail-page" className="model-detail-page h-screen flex flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
       {/* Header - Fixed */}
-      <header className="glass-dark border-b border-white/10 flex-shrink-0">
-        <div className="w-full max-w-[1612px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-              <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/50">
+      <header id="detail-header" className="detail-header glass-dark border-b border-white/10 flex-shrink-0">
+        <div className="detail-header-container w-full max-w-[1612px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="detail-header-content flex items-center justify-between">
+            <Link href="/" className="back-to-gallery-link flex items-center space-x-3 hover:opacity-80 transition-opacity">
+              <div className="back-logo w-10 h-10 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/50">
                 <span className="text-white font-bold text-lg">3D</span>
               </div>
-              <span className="text-xl font-bold text-white">← Back to Gallery</span>
+              <span className="back-text text-xl font-bold text-white">← Back to Gallery</span>
             </Link>
           </div>
         </div>
       </header>
 
       {/* Main Content - No Scroll */}
-      <main className="flex-1 overflow-hidden">
-        <div className="w-full max-w-[1612px] mx-auto px-4 sm:px-6 lg:px-8 h-full">
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 h-full py-6">
+      <main id="detail-main" className="detail-main flex-1 overflow-hidden">
+        <div className="detail-container w-full max-w-[1612px] mx-auto px-4 sm:px-6 lg:px-8 h-full">
+          <div className="detail-layout grid grid-cols-1 xl:grid-cols-3 gap-6 h-full py-6">
             {/* Left: Preview Area */}
-            <div className="xl:col-span-2 flex flex-col gap-4 h-full">
+            <div id="preview-area" className="preview-area xl:col-span-2 flex flex-col gap-4 h-full">
               {/* Main Viewer - Takes remaining space */}
-              <div className="flex-1 bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
+              <div id="model-viewer-container" className="model-viewer-container flex-1 bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
                 <div 
-                  className="relative w-full h-full"
+                  className="viewer-content relative w-full h-full"
                   onContextMenu={(e) => e.preventDefault()}
                   style={{ userSelect: 'none' }}
                 >
@@ -134,19 +134,21 @@ export default function ModelDetailPage() {
               </div>
 
               {/* Gallery Thumbnails - Fixed height with horizontal scroll */}
-              <div className="flex-shrink-0 bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-4">
-                <div className="flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#6366f1 transparent' }}>
-                  {allMedia.map((media, idx) => (
+              <div id="gallery-thumbnails" className="gallery-thumbnails flex-shrink-0 bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-4">
+                <div className="thumbnails-scroll-container flex gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#6366f1 transparent' }}>
+                   {allMedia.map((media, idx) => (
                     <button
                       key={idx}
+                      data-media-type={media.type}
+                      data-media-index={idx}
                       onClick={() => {
                         setSelectedImageIndex(idx);
                         setViewMode(media.type === '3d' ? '3d' : 'image');
                       }}
-                      className={`flex-shrink-0 relative w-28 h-28 rounded-xl overflow-hidden transition-all duration-300 ${
+                      className={`thumbnail-button flex-shrink-0 relative w-28 h-28 rounded-xl overflow-hidden transition-all duration-300 ${
                         selectedImageIndex === idx 
-                          ? 'ring-4 ring-indigo-500 shadow-2xl shadow-indigo-500/50 scale-105' 
-                          : 'ring-2 ring-white/10 hover:ring-indigo-400/50 hover:scale-102'
+                          ? 'thumbnail-active ring-4 ring-indigo-500 shadow-2xl shadow-indigo-500/50 scale-105' 
+                          : 'thumbnail-inactive ring-2 ring-white/10 hover:ring-indigo-400/50 hover:scale-102'
                       }`}
                       style={{ boxSizing: 'content-box' }}
                     >
@@ -172,16 +174,16 @@ export default function ModelDetailPage() {
             </div>
 
             {/* Right: Scrollable Details Sidebar */}
-            <div className="xl:col-span-1 overflow-hidden">
+            <div id="details-sidebar" className="details-sidebar xl:col-span-1 overflow-hidden">
               <div 
-                className="h-full overflow-y-auto pr-2 space-y-4"
+                className="sidebar-scroll-container h-full overflow-y-auto pr-2 space-y-4"
                 style={{
                   scrollbarWidth: 'thin',
                   scrollbarColor: '#6366f1 transparent'
                 }}
               >
                 {/* Title */}
-                <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
+                <div id="model-title-section" className="model-title-section bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
                   {model.featured && (
                     <div className="inline-block bg-gradient-to-r from-amber-400 to-orange-500 text-white text-sm font-bold px-4 py-2 rounded-full shadow-lg mb-3">
                       ⭐ Featured
@@ -196,16 +198,16 @@ export default function ModelDetailPage() {
                 </div>
 
                 {/* Description */}
-                <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
-                  <h2 className="text-lg font-bold text-white mb-2">Description</h2>
-                  <p className="text-slate-300 leading-relaxed text-sm">{model.description}</p>
+                <div id="model-description-section" className="model-description-section bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
+                  <h2 className="section-title text-lg font-bold text-white mb-2">Description</h2>
+                  <p className="section-content text-slate-300 leading-relaxed text-sm">{model.description}</p>
                 </div>
 
                 {/* Tags */}
                 {model.tags && model.tags.length > 0 && (
-                  <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
-                    <h2 className="text-lg font-bold text-white mb-2">Tags</h2>
-                    <div className="flex flex-wrap gap-2">
+                  <div id="model-tags-section" className="model-tags-section bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
+                    <h2 className="section-title text-lg font-bold text-white mb-2">Tags</h2>
+                    <div className="tags-container flex flex-wrap gap-2">
                       {model.tags.map((tag, index) => (
                         <span
                           key={index}
@@ -220,9 +222,9 @@ export default function ModelDetailPage() {
 
                 {/* Stats */}
                 {model.stats && (
-                  <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
-                    <h2 className="text-lg font-bold text-white mb-3">Statistics</h2>
-                    <div className="space-y-2">
+                  <div id="model-stats-section" className="model-stats-section bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
+                    <h2 className="section-title text-lg font-bold text-white mb-3">Statistics</h2>
+                    <div className="stats-list space-y-2">
                       <div className="flex justify-between items-center p-3 bg-gradient-to-br from-blue-600/20 to-indigo-600/20 rounded-xl border border-blue-500/30">
                         <span className="text-sm text-slate-300 font-medium">Polygons</span>
                         <span className="text-base font-bold text-blue-400">{model.stats.polygons}</span>
@@ -241,9 +243,9 @@ export default function ModelDetailPage() {
 
                 {/* Features */}
                 {model.features && model.features.length > 0 && (
-                  <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
-                    <h2 className="text-lg font-bold text-white mb-3">Key Features</h2>
-                    <ul className="space-y-2">
+                  <div id="model-features-section" className="model-features-section bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
+                    <h2 className="section-title text-lg font-bold text-white mb-3">Key Features</h2>
+                    <ul className="features-list space-y-2">
                       {model.features.map((feature, index) => (
                         <li key={index} className="flex items-start gap-2">
                           <span className="text-green-400 text-lg mt-0.5 flex-shrink-0">✓</span>
@@ -256,9 +258,9 @@ export default function ModelDetailPage() {
 
                 {/* Technical Details */}
                 {model.technicalDetails && (
-                  <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
-                    <h2 className="text-lg font-bold text-white mb-3">Technical Details</h2>
-                    <div className="space-y-2 text-sm">
+                  <div id="model-technical-section" className="model-technical-section bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
+                    <h2 className="section-title text-lg font-bold text-white mb-3">Technical Details</h2>
+                    <div className="technical-details-list space-y-2 text-sm">
                       {model.technicalDetails.textureResolution && (
                         <div className="flex justify-between py-2 border-b border-white/5">
                           <span className="text-slate-400 font-medium">Texture Resolution:</span>
@@ -294,13 +296,13 @@ export default function ModelDetailPage() {
                 )}
 
                 {/* Purchase CTA - Sticky at bottom of sidebar scroll */}
-                <div className="sticky bottom-0 bg-gradient-to-t from-slate-950 via-slate-950 to-transparent pt-4 pb-2">
+                <div id="purchase-cta-section" className="purchase-cta-section sticky bottom-0 bg-gradient-to-t from-slate-950 via-slate-950 to-transparent pt-4 pb-2">
                   {model.fabUrl && (
                     <a
                       href={model.fabUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-center py-4 px-6 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-indigo-500/50 transition-all duration-300 transform hover:-translate-y-1"
+                      className="purchase-button block w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-center py-4 px-6 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-indigo-500/50 transition-all duration-300 transform hover:-translate-y-1"
                     >
                       <div className="flex items-center justify-center gap-3">
                         <span className="text-2xl">🛒</span>

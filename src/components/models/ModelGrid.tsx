@@ -93,14 +93,14 @@ export function ModelGrid() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-indigo-500/30 border-t-indigo-500 mx-auto"></div>
-            <div className="animate-ping absolute inset-0 rounded-full h-16 w-16 border-4 border-indigo-500 opacity-20"></div>
+      <div id="grid-loading" className="grid-loading flex items-center justify-center py-20">
+        <div className="loading-content text-center">
+          <div className="loading-spinner-wrapper relative">
+            <div className="loading-spinner animate-spin rounded-full h-16 w-16 border-4 border-indigo-500/30 border-t-indigo-500 mx-auto"></div>
+            <div className="loading-pulse animate-ping absolute inset-0 rounded-full h-16 w-16 border-4 border-indigo-500 opacity-20"></div>
           </div>
-          <p className="mt-6 text-slate-300 text-lg font-medium">Loading amazing 3D models...</p>
-          <p className="text-slate-500 text-sm">This won&apos;t take long</p>
+          <p className="loading-text mt-6 text-slate-300 text-lg font-medium">Loading amazing 3D models...</p>
+          <p className="loading-subtext text-slate-500 text-sm">This won&apos;t take long</p>
         </div>
       </div>
     );
@@ -108,8 +108,8 @@ export function ModelGrid() {
 
   if (models.length === 0) {
     return (
-      <div className="text-center py-20">
-        <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl p-12 border border-white/10 shadow-2xl max-w-md mx-auto">
+      <div id="grid-empty" className="grid-empty text-center py-20">
+        <div className="empty-state-card bg-slate-900/50 backdrop-blur-sm rounded-2xl p-12 border border-white/10 shadow-2xl max-w-md mx-auto">
           <div className="w-20 h-20 bg-gradient-to-r from-slate-800 to-slate-700 rounded-full flex items-center justify-center mx-auto mb-6">
             <span className="text-slate-400 text-3xl">🔍</span>
           </div>
@@ -127,12 +127,13 @@ export function ModelGrid() {
   }
 
   return (
-    <div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div id="models-grid-wrapper" className="models-grid-wrapper">
+      <div id="models-grid" className="models-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {models.map((model, index) => (
           <div
             key={model.id}
-            className="animate-fadeInUp"
+            className="grid-item animate-fadeInUp"
+            data-model-index={index}
             style={{
               animationDelay: `${index * 0.1}s`,
               animationFillMode: 'both'
@@ -145,7 +146,7 @@ export function ModelGrid() {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-3 mt-12">
+        <nav id="pagination" className="pagination flex justify-center items-center gap-3 mt-12" aria-label="Models pagination">
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
@@ -154,14 +155,16 @@ export function ModelGrid() {
             ← Previous
           </button>
           
-          <div className="flex items-center gap-2">
+          <div className="pagination-numbers flex items-center gap-2">
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
               const pageNum = i + 1;
               return (
                 <button
                   key={pageNum}
                   onClick={() => setPage(pageNum)}
-                  className={`px-4 py-3 rounded-xl font-medium transition-all duration-200 transform hover:-translate-y-0.5 ${
+                  aria-label={`Page ${pageNum}`}
+                  aria-current={page === pageNum ? 'page' : undefined}
+                  className={`page-button px-4 py-3 rounded-xl font-medium transition-all duration-200 transform hover:-translate-y-0.5 ${
                     page === pageNum
                       ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/50'
                       : 'bg-slate-900/50 backdrop-blur-sm border border-white/10 text-slate-300 hover:bg-slate-900/70 hover:shadow-lg'

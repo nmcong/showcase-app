@@ -42,8 +42,8 @@ export function ModelFilters({ categories, availableTags }: ModelFiltersProps) {
   };
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6 space-y-6 sticky top-28">
-      <div className="flex items-center justify-between">
+    <div id="model-filters" className="model-filters bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6 space-y-6 sticky top-28">
+      <div className="filters-header flex items-center justify-between">
         <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
           <span className="w-2 h-2 bg-gradient-primary rounded-full"></span>
           Filters
@@ -57,17 +57,19 @@ export function ModelFilters({ categories, availableTags }: ModelFiltersProps) {
       </div>
 
       {/* Search */}
-      <div>
-        <label className="block text-sm font-semibold text-slate-700 mb-3">
+      <div id="filter-search" className="filter-search">
+        <label htmlFor="search-input" className="search-label block text-sm font-semibold text-slate-700 mb-3">
           🔍 Search
         </label>
-        <div className="relative">
+        <div className="search-input-wrapper relative">
           <input
+            id="search-input"
             type="text"
             value={localSearch}
             onChange={(e) => setLocalSearch(e.target.value)}
             placeholder="Search models..."
-            className="w-full px-4 py-3 bg-white/60 border border-white/30 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent backdrop-blur-sm transition-all duration-200 font-medium placeholder-slate-400"
+            aria-label="Search models"
+            className="search-input w-full px-4 py-3 bg-white/60 border border-white/30 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent backdrop-blur-sm transition-all duration-200 font-medium placeholder-slate-400"
           />
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,13 +80,15 @@ export function ModelFilters({ categories, availableTags }: ModelFiltersProps) {
       </div>
 
       {/* Featured */}
-      <div>
-        <label className="flex items-center gap-3 cursor-pointer p-3 bg-amber-50/80 rounded-xl border border-amber-100 hover:bg-amber-50 transition-colors">
+      <div id="filter-featured" className="filter-featured">
+        <label htmlFor="featured-checkbox" className="featured-label flex items-center gap-3 cursor-pointer p-3 bg-amber-50/80 rounded-xl border border-amber-100 hover:bg-amber-50 transition-colors">
           <input
+            id="featured-checkbox"
             type="checkbox"
             checked={featured || false}
             onChange={(e) => setFeatured(e.target.checked ? true : undefined)}
-            className="w-5 h-5 text-amber-600 rounded-lg focus:ring-2 focus:ring-amber-500 border-amber-300"
+            aria-label="Show featured models only"
+            className="featured-checkbox w-5 h-5 text-amber-600 rounded-lg focus:ring-2 focus:ring-amber-500 border-amber-300"
           />
           <span className="text-sm font-semibold text-amber-800 flex items-center gap-1">
             ⭐ Featured Models Only
@@ -93,14 +97,16 @@ export function ModelFilters({ categories, availableTags }: ModelFiltersProps) {
       </div>
 
       {/* Categories */}
-      <div>
-        <label className="block text-sm font-semibold text-slate-700 mb-3">
+      <div id="filter-category" className="filter-category">
+        <label htmlFor="category-select" className="category-label block text-sm font-semibold text-slate-700 mb-3">
           📁 Category
         </label>
         <select
+          id="category-select"
           value={category || ''}
           onChange={(e) => setCategory(e.target.value || undefined)}
-          className="w-full px-4 py-3 bg-white/60 border border-white/30 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent backdrop-blur-sm font-medium text-slate-700 appearance-none cursor-pointer"
+          aria-label="Filter by category"
+          className="category-select w-full px-4 py-3 bg-white/60 border border-white/30 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent backdrop-blur-sm font-medium text-slate-700 appearance-none cursor-pointer"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e")`,
             backgroundPosition: 'right 0.75rem center',
@@ -118,11 +124,11 @@ export function ModelFilters({ categories, availableTags }: ModelFiltersProps) {
       </div>
 
       {/* Price Range */}
-      <div>
-        <label className="block text-sm font-semibold text-slate-700 mb-3">
+      <div id="filter-price" className="filter-price">
+        <label className="price-label block text-sm font-semibold text-slate-700 mb-3">
           💰 Price Range
         </label>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="price-inputs grid grid-cols-2 gap-3">
           <input
             type="number"
             value={minPrice || ''}
@@ -142,11 +148,11 @@ export function ModelFilters({ categories, availableTags }: ModelFiltersProps) {
 
       {/* Tags */}
       {availableTags.length > 0 && (
-        <div>
-          <label className="block text-sm font-semibold text-slate-700 mb-3">
+        <div id="filter-tags" className="filter-tags">
+          <label className="tags-label block text-sm font-semibold text-slate-700 mb-3">
             🏷️ Tags
           </label>
-          <div className="flex flex-wrap gap-2">
+          <div className="tags-buttons flex flex-wrap gap-2">
             {availableTags.map((tag) => (
               <button
                 key={tag}
