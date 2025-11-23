@@ -21,6 +21,7 @@ interface ModelDetail {
   unrealMarketUrl?: string;
   unityMarketUrl?: string;
   featured: boolean;
+  author?: string;
   stats?: {
     polygons: string;
     textures: string;
@@ -376,6 +377,19 @@ export default function ModelDetailPage() {
                   <h2 className="section-title text-lg font-bold text-white mb-2">Description</h2>
                   <p className="section-content text-slate-300 leading-relaxed text-sm">{model.description}</p>
                 </div>
+
+                {/* Author */}
+                {model.author && (
+                  <div id="model-author-section" className="model-author-section bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
+                    <h2 className="section-title text-lg font-bold text-white mb-2">Author</h2>
+                    <a 
+                      href={`mailto:${model.author}`}
+                      className="text-slate-300 hover:text-white transition-colors text-sm break-all"
+                    >
+                      {model.author}
+                    </a>
+                  </div>
+                )}
 
                 {/* Tags */}
                 {model.tags && model.tags.length > 0 && (

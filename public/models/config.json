@@ -8,7 +8,6 @@
       "category": "Weapons",
       "tags": ["Weapons", "Katana", "Samurai", "Sword", "Japanese", "Weapon", "Bamboo", "Kitsune", "Modular", "Medieval"],
       "thumbnail": "/models/KatanaBamboo/thumbnail.jpg",
-      "modelPath": "/models/KatanaBamboo/bamboo_katana.glb",
       "images": [
         "/models/KatanaBamboo/images/079c33e8-cc7f-4a61-8f13-94174e6113c1.jpg",
         "/models/KatanaBamboo/images/1a1b6953-203d-4a1a-a14d-ced1d8918d72.jpg",
@@ -21,6 +20,7 @@
       ],
       "fabUrl": "https://www.fab.com/listings/adf3e0a5-42ef-4ba0-bf33-03e4272be0a3",
       "featured": true,
+      "author": "mhkhan.artist@gmail.com",
       "stats": {
         "polygons": "43,974 triangles",
         "textures": "56 textures (4K PBR)",
@@ -70,6 +70,7 @@
       ],
       "fabUrl": "https://www.fab.com/listings/127ee8e1-057f-482f-98af-0f49d0d49ab5",
       "featured": false,
+      "author": "mhkhan.artist@gmail.com",
       "stats": {
         "polygons": "188-15,496 vertices",
         "textures": "58 textures (4K PBR)",
@@ -115,6 +116,7 @@
       ],
       "fabUrl": "https://www.fab.com/listings/5e589cc1-a3a7-4a21-8c19-576689974461",
       "featured": false,
+      "author": "mhkhan.artist@gmail.com",
       "stats": {
         "polygons": "111,044 triangles",
         "textures": "4 textures (2K)",
