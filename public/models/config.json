@@ -145,6 +145,55 @@
       "features": [
         "High-quality PBR materials"
       ]
+    },
+    {
+      "id": "katana-peony-001",
+      "title": "Katana Samurai Sword Modular Pack Peony Flower",
+      "slug": "katana-samurai-sword-modular-pack-peony-flower",
+      "description": "A comprehensive modular katana pack featuring traditional Japanese samurai swords with peony flower designs. This pack includes fully assembled katana, tachi, and wakizashi variants with scabbards. Features high-quality PBR textures, automatic collision meshes, and 4 LOD levels for optimal performance. Perfect for samurai games, feudal Japan settings, and historical action games.",
+      "category": "Weapons",
+      "tags": ["Katana", "Samurai", "Sword", "Japanese", "Weapon", "Modular", "Peony", "Tachi", "Wakizashi"],
+      "thumbnail": "/models/Peony/images/4ae788a2-2cd6-4afb-9757-c45cb55d1277.jpg",
+      "images": [
+        "/models/Peony/images/0750825e-dd3e-4757-bbaf-dfc8aa717b1e.jpg",
+        "/models/Peony/images/43a20ac4-5a49-466c-b08b-743a23da77da.jpg",
+        "/models/Peony/images/4ae788a2-2cd6-4afb-9757-c45cb55d1277.jpg",
+        "/models/Peony/images/4ae88e47-234e-4186-bdc7-90542e5b5a41.jpg",
+        "/models/Peony/images/4c3d2d94-479c-495e-aac6-3adb9e3293d5.jpg",
+        "/models/Peony/images/51239e5c-ef8a-40aa-bd1f-216a65c7f86b.jpg",
+        "/models/Peony/images/8b38ed44-f29f-4a77-a84f-1b2f52b51f0e.jpg",
+        "/models/Peony/images/9015ea77-0497-4390-9c02-82293dc5d349.jpg",
+        "/models/Peony/images/960414d4-3588-4c6d-903f-87a56f48bce7.jpg"
+      ],
+      "featured": false,
+      "stats": {
+        "polygons": "188-15,496 vertices",
+        "textures": "58 textures (4K PBR)",
+        "fileSize": "Modular pack"
+      },
+      "features": [
+        "Modular design - mix and match components",
+        "3 fully assembled variants (Katana, Tachi, Wakizashi)",
+        "12 unique meshes",
+        "Automatic collision mesh generation",
+        "4 LOD levels (automatically generated)",
+        "28 material instances",
+        "Game-ready assets",
+        "Optimized for Unreal Engine"
+      ],
+      "technicalDetails": {
+        "uniqueMeshes": "12",
+        "vertexCount": "188-15,496",
+        "trisCount": "Fully assembled katana with scabbard: 41,559 tris | Fully assembled tachi with scabbard: 43,223 tris | Fully assembled wakizashi with scabbard: 15,382 tris",
+        "collisionMesh": "Yes, automatically generated",
+        "lods": "Yes, automatically generated",
+        "numberOfLods": "4 LODs",
+        "numberOfMaterials": "3",
+        "numberOfMaterialInstances": "28",
+        "numberOfTextures": "58 (Each modular asset is assigned a unique material, with the exception of the blade assets, which all share a single material)",
+        "textureResolution": "4096x4096",
+        "supportedPlatforms": "Windows (x64)"
+      }
     }
   ]
 }

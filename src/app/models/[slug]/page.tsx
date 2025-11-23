@@ -142,8 +142,20 @@ export default function ModelDetailPage() {
     return null;
   }
 
+  // Set initial view mode based on available content
+  useEffect(() => {
+    if (model) {
+      if (model.modelPath) {
+        setViewMode('3d');
+      } else if (model.images && model.images.length > 0) {
+        setViewMode('image');
+        setSelectedImageIndex(0);
+      }
+    }
+  }, [model]);
+
   const allMedia = [
-    { type: '3d', url: model.modelPath, label: '3D Model' },
+    ...(model.modelPath ? [{ type: '3d' as const, url: model.modelPath, label: '3D Model' }] : []),
     ...(model.images || []).map((img, idx) => ({ 
       type: 'image' as const, 
       url: img, 
@@ -216,7 +228,7 @@ export default function ModelDetailPage() {
                   onContextMenu={(e) => e.preventDefault()}
                   style={{ userSelect: 'none' }}
                 >
-                  {viewMode === '3d' ? (
+                  {viewMode === '3d' && model.modelPath ? (
                     <ModelViewer 
                       modelUrl={model.modelPath} 
                       texturesPath="/models/KatanaBamboo"
