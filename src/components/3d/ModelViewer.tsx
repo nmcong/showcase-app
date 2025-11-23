@@ -103,7 +103,7 @@ function Model({ url, texturesPath, onProgress }: { url: string; texturesPath?: 
           try {
             textures.ao = await new Promise((resolve, reject) => {
               textureLoader.load(
-                `${texturesPath}/${set.prefix}_ambientocclusion.jpg`,
+                `${texturesPath}/textures/${set.prefix}_ambientocclusion.jpg`,
                 (texture) => {
                   texture.flipY = false;
                   updateProgress();
@@ -122,7 +122,7 @@ function Model({ url, texturesPath, onProgress }: { url: string; texturesPath?: 
           try {
             textures.metallic = await new Promise((resolve, reject) => {
               textureLoader.load(
-                `${texturesPath}/${set.prefix}_metallic.jpg`,
+                `${texturesPath}/textures/${set.prefix}_metallic.jpg`,
                 (texture) => {
                   texture.flipY = false;
                   updateProgress();
@@ -141,7 +141,7 @@ function Model({ url, texturesPath, onProgress }: { url: string; texturesPath?: 
           try {
             textures.normal = await new Promise((resolve, reject) => {
               textureLoader.load(
-                `${texturesPath}/${set.prefix}_normal_directx.jpg`,
+                `${texturesPath}/textures/${set.prefix}_normal_directx.jpg`,
                 (texture) => {
                   texture.flipY = false;
                   updateProgress();
@@ -160,7 +160,7 @@ function Model({ url, texturesPath, onProgress }: { url: string; texturesPath?: 
           try {
             textures.roughness = await new Promise((resolve, reject) => {
               textureLoader.load(
-                `${texturesPath}/${set.prefix}_roughness.jpg`,
+                `${texturesPath}/textures/${set.prefix}_roughness.jpg`,
                 (texture) => {
                   texture.flipY = false;
                   updateProgress();

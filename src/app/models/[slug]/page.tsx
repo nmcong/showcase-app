@@ -231,7 +231,7 @@ export default function ModelDetailPage() {
                   {viewMode === '3d' && model.modelPath ? (
                     <ModelViewer 
                       modelUrl={model.modelPath} 
-                      texturesPath="/models/KatanaBamboo"
+                      texturesPath={model.modelPath.substring(0, model.modelPath.lastIndexOf('/'))}
                       enableTextureToggle={true}
                     />
                   ) : (
