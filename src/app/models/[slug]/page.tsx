@@ -123,6 +123,18 @@ export default function ModelDetailPage() {
     scrollContainerRef.current.style.userSelect = 'auto';
   };
 
+  // Set initial view mode based on available content
+  useEffect(() => {
+    if (model) {
+      if (model.modelPath) {
+        setViewMode('3d');
+      } else if (model.images && model.images.length > 0) {
+        setViewMode('image');
+        setSelectedImageIndex(0);
+      }
+    }
+  }, [model]);
+
   // Listen to scroll events to update arrow button states
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -141,18 +153,6 @@ export default function ModelDetailPage() {
   if (!model) {
     return null;
   }
-
-  // Set initial view mode based on available content
-  useEffect(() => {
-    if (model) {
-      if (model.modelPath) {
-        setViewMode('3d');
-      } else if (model.images && model.images.length > 0) {
-        setViewMode('image');
-        setSelectedImageIndex(0);
-      }
-    }
-  }, [model]);
 
   const allMedia = [
     ...(model.modelPath ? [{ type: '3d' as const, url: model.modelPath, label: '3D Model' }] : []),

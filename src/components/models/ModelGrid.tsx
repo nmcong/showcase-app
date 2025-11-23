@@ -153,7 +153,7 @@ export function ModelGrid() {
 
   return (
     <div id="models-grid-wrapper" className="models-grid-wrapper">
-      <div id="models-grid" className="models-grid grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 auto-rows-fr">
+      <div id="models-grid" className="models-grid grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8" style={{ gridAutoRows: '1fr' }}>
         {models.map((model, index) => {
           // Only the first featured model gets large layout (full width on desktop)
           const isFeaturedLarge = model.featured && index === models.findIndex(m => m.featured);
@@ -161,7 +161,7 @@ export function ModelGrid() {
           return (
           <div
             key={model.id}
-              className={`grid-item ${isFeaturedLarge ? 'lg:col-span-2' : ''} ${shouldAnimate ? 'animate-fadeInUp' : ''}`}
+              className={`grid-item h-full ${isFeaturedLarge ? 'lg:col-span-2' : ''} ${shouldAnimate ? 'animate-fadeInUp' : ''}`}
               data-model-index={index}
               data-featured={isFeaturedLarge}
             style={{

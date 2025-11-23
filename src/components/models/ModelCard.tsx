@@ -12,8 +12,8 @@ interface ModelCardProps {
 
 export function ModelCard({ model, isFeaturedLarge = false }: ModelCardProps) {
   return (
-    <Link href={`/models/${model.slug}`} className="model-card-link group" data-model-id={model.id} data-model-slug={model.slug}>
-      <article id={`model-card-${model.id}`} className={`model-card h-full flex flex-col bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 overflow-hidden hover:shadow-2xl hover:shadow-indigo-500/20 hover:bg-slate-900/70 transition-all duration-500 transform hover:-translate-y-2 hover:border-indigo-500/30 ${isFeaturedLarge ? 'featured-large' : ''}`}>
+    <Link href={`/models/${model.slug}`} className="model-card-link group h-full flex" data-model-id={model.id} data-model-slug={model.slug}>
+      <article id={`model-card-${model.id}`} className={`model-card h-full w-full flex flex-col bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 overflow-hidden hover:shadow-2xl hover:shadow-indigo-500/20 hover:bg-slate-900/70 transition-all duration-500 transform hover:-translate-y-2 hover:border-indigo-500/30 ${isFeaturedLarge ? 'featured-large' : ''}`}>
         {/* Thumbnail */}
         <div className={`card-thumbnail relative ${isFeaturedLarge ? 'h-72' : 'h-56'} bg-gradient-to-br from-slate-900 to-slate-800 overflow-hidden flex-shrink-0`}>
           <Image
