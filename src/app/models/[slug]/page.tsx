@@ -28,10 +28,33 @@ interface ModelDetail {
   };
   features?: string[];
   technicalDetails?: {
+    // Geometry
+    triangles?: string;
+    totalTriangles?: string;
+    vertices?: string;
+    vertexCount?: string;
+    uniqueMeshes?: string;
+    trisCount?: string;
+    // Textures & Materials
+    numberOfTextures?: string;
+    maxTextureResolution?: string;
     textureResolution?: string;
     textureFormats?: string[];
-    uvMapping?: string;
+    numberOfMaterials?: string;
+    numberOfMaterialInstances?: string;
+    vertexColors?: string | boolean;
+    squareTextures?: string | boolean;
+    // Animations
+    animationsTracks?: string | number;
+    riggedAnimations?: string | boolean;
+    morphAnimations?: string | boolean;
+    // Additional
+    lods?: string | boolean;
+    numberOfLods?: string;
     collisionMesh?: string;
+    uvMapping?: string;
+    scanned?: string | boolean;
+    supportedPlatforms?: string;
   };
 }
 
@@ -372,22 +395,42 @@ export default function ModelDetailPage() {
                 )}
 
                 {/* Stats */}
-                {model.stats && (
+                {model.technicalDetails && (
                   <div id="model-stats-section" className="model-stats-section bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
                     <h2 className="section-title text-lg font-bold text-white mb-3">Statistics</h2>
                     <div className="stats-list space-y-2">
-                      <div className="flex justify-between items-center p-3 bg-gradient-to-br from-blue-600/20 to-indigo-600/20 rounded-xl border border-blue-500/30">
-                        <span className="text-sm text-slate-300 font-medium">Polygons</span>
-                        <span className="text-base font-bold text-blue-400">{model.stats.polygons}</span>
-                      </div>
-                      <div className="flex justify-between items-center p-3 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-xl border border-purple-500/30">
-                        <span className="text-sm text-slate-300 font-medium">Textures</span>
-                        <span className="text-base font-bold text-purple-400">{model.stats.textures}</span>
-                      </div>
-                      <div className="flex justify-between items-center p-3 bg-gradient-to-br from-emerald-600/20 to-green-600/20 rounded-xl border border-emerald-500/30">
-                        <span className="text-sm text-slate-300 font-medium">File Size</span>
-                        <span className="text-base font-bold text-emerald-400">{model.stats.fileSize}</span>
-                      </div>
+                      {model.technicalDetails.uniqueMeshes && (
+                        <div className="flex justify-between items-center p-3 bg-gradient-to-br from-blue-600/20 to-indigo-600/20 rounded-xl border border-blue-500/30">
+                          <span className="text-sm text-slate-300 font-medium">Unique Meshes</span>
+                          <span className="text-base font-bold text-blue-400">{model.technicalDetails.uniqueMeshes}</span>
+                        </div>
+                      )}
+                      {model.technicalDetails.vertexCount && (
+                        <div className="flex justify-between items-center p-3 bg-gradient-to-br from-cyan-600/20 to-blue-600/20 rounded-xl border border-cyan-500/30">
+                          <span className="text-sm text-slate-300 font-medium">Vertices</span>
+                          <span className="text-base font-bold text-cyan-400">{model.technicalDetails.vertexCount}</span>
+                        </div>
+                      )}
+                      {model.technicalDetails.numberOfTextures && (
+                        <div className="flex justify-between items-center p-3 bg-gradient-to-br from-amber-600/20 to-orange-600/20 rounded-xl border border-amber-500/30">
+                          <span className="text-sm text-slate-300 font-medium">Textures</span>
+                          <span className="text-base font-bold text-amber-400">
+                            {model.technicalDetails.numberOfTextures.split('(')[0].trim()}
+                          </span>
+                        </div>
+                      )}
+                      {model.technicalDetails.numberOfMaterials && (
+                        <div className="flex justify-between items-center p-3 bg-gradient-to-br from-emerald-600/20 to-green-600/20 rounded-xl border border-emerald-500/30">
+                          <span className="text-sm text-slate-300 font-medium">Materials</span>
+                          <span className="text-base font-bold text-emerald-400">{model.technicalDetails.numberOfMaterials}</span>
+                        </div>
+                      )}
+                      {model.technicalDetails.textureResolution && (
+                        <div className="flex justify-between items-center p-3 bg-gradient-to-br from-rose-600/20 to-pink-600/20 rounded-xl border border-rose-500/30">
+                          <span className="text-sm text-slate-300 font-medium">Texture Resolution</span>
+                          <span className="text-base font-bold text-rose-400">{model.technicalDetails.textureResolution}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -410,36 +453,187 @@ export default function ModelDetailPage() {
                 {/* Technical Details */}
                 {model.technicalDetails && (
                   <div id="model-technical-section" className="model-technical-section bg-slate-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-white/10 p-5">
-                    <h2 className="section-title text-lg font-bold text-white mb-3">Technical Details</h2>
-                    <div className="technical-details-list space-y-2 text-sm">
-                      {model.technicalDetails.textureResolution && (
-                        <div className="flex justify-between py-2 border-b border-white/5">
-                          <span className="text-slate-400 font-medium">Texture Resolution:</span>
-                          <span className="text-slate-200 font-semibold">{model.technicalDetails.textureResolution}</span>
-                        </div>
-                      )}
-                      {model.technicalDetails.textureFormats && (
-                        <div className="py-2 border-b border-white/5">
-                          <span className="text-slate-400 font-medium block mb-2">Texture Formats:</span>
-                          <div className="flex flex-wrap gap-2">
-                            {model.technicalDetails.textureFormats.map((format, i) => (
-                              <span key={i} className="bg-slate-800 text-slate-300 px-2 py-1 rounded text-xs border border-white/5">
-                                {format}
-                              </span>
-                            ))}
+                    <h2 className="section-title text-lg font-bold text-white mb-4">Technical Details</h2>
+                    <div className="technical-details-list space-y-4 text-sm">
+                      {/* Geometry Section */}
+                      {(model.technicalDetails.triangles || model.technicalDetails.totalTriangles || model.technicalDetails.uniqueMeshes || model.technicalDetails.vertexCount) && (
+                        <div className="technical-group">
+                          <h3 className="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3">Geometry</h3>
+                          <div className="space-y-2">
+                            {model.technicalDetails.uniqueMeshes && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">Unique Meshes:</span>
+                                <span className="text-slate-200 font-semibold">{model.technicalDetails.uniqueMeshes}</span>
+                              </div>
+                            )}
+                            {model.technicalDetails.vertexCount && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">Vertices:</span>
+                                <span className="text-slate-200 font-semibold">{model.technicalDetails.vertexCount}</span>
+                              </div>
+                            )}
+                            {(model.technicalDetails.triangles || model.technicalDetails.totalTriangles) && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">Triangles:</span>
+                                <span className="text-slate-200 font-semibold">{model.technicalDetails.totalTriangles || model.technicalDetails.triangles}</span>
+                              </div>
+                            )}
+                            {model.technicalDetails.trisCount && (
+                              <div className="py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium block mb-1">Tri Count Details:</span>
+                                <span className="text-slate-200 text-xs leading-relaxed">{model.technicalDetails.trisCount}</span>
+                              </div>
+                            )}
                           </div>
                         </div>
                       )}
-                      {model.technicalDetails.uvMapping && (
-                        <div className="flex justify-between py-2 border-b border-white/5">
-                          <span className="text-slate-400 font-medium">UV Mapping:</span>
-                          <span className="text-slate-200 font-semibold">{model.technicalDetails.uvMapping}</span>
+
+                      {/* Textures & Materials Section */}
+                      {(model.technicalDetails.numberOfTextures || model.technicalDetails.maxTextureResolution || model.technicalDetails.textureResolution || model.technicalDetails.numberOfMaterials || model.technicalDetails.numberOfMaterialInstances) && (
+                        <div className="technical-group">
+                          <h3 className="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3">Textures & Materials</h3>
+                          <div className="space-y-2">
+                            {model.technicalDetails.numberOfTextures && (
+                              <div className="py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium block mb-1">Textures:</span>
+                                <span className="text-slate-200 text-xs leading-relaxed">{model.technicalDetails.numberOfTextures}</span>
+                              </div>
+                            )}
+                            {(model.technicalDetails.maxTextureResolution || model.technicalDetails.textureResolution) && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">Max Texture Resolution:</span>
+                                <span className="text-slate-200 font-semibold">{model.technicalDetails.maxTextureResolution || model.technicalDetails.textureResolution}</span>
+                              </div>
+                            )}
+                            {model.technicalDetails.numberOfMaterials && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">Materials:</span>
+                                <span className="text-slate-200 font-semibold">{model.technicalDetails.numberOfMaterials}</span>
+                              </div>
+                            )}
+                            {model.technicalDetails.numberOfMaterialInstances && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">Material Instances:</span>
+                                <span className="text-slate-200 font-semibold">{model.technicalDetails.numberOfMaterialInstances}</span>
+                              </div>
+                            )}
+                            {model.technicalDetails.textureFormats && (
+                              <div className="py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium block mb-2">Texture Formats:</span>
+                                <div className="flex flex-wrap gap-2">
+                                  {model.technicalDetails.textureFormats.map((format, i) => (
+                                    <span key={i} className="bg-slate-700 text-slate-200 px-2 py-1 rounded text-xs border border-white/10">
+                                      {format}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                            {model.technicalDetails.vertexColors !== undefined && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">Vertex Colors:</span>
+                                <span className={`font-semibold ${model.technicalDetails.vertexColors === 'Yes' || model.technicalDetails.vertexColors === true ? 'text-green-400' : 'text-slate-400'}`}>
+                                  {model.technicalDetails.vertexColors === 'Yes' || model.technicalDetails.vertexColors === true ? 'Yes' : 'No'}
+                                </span>
+                              </div>
+                            )}
+                            {model.technicalDetails.squareTextures !== undefined && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">Square Textures:</span>
+                                <span className={`font-semibold ${model.technicalDetails.squareTextures === 'Yes' || model.technicalDetails.squareTextures === true ? 'text-green-400' : 'text-slate-400'}`}>
+                                  {model.technicalDetails.squareTextures === 'Yes' || model.technicalDetails.squareTextures === true ? 'Yes' : 'No'}
+                                </span>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       )}
-                      {model.technicalDetails.collisionMesh && (
-                        <div className="flex justify-between py-2">
-                          <span className="text-slate-400 font-medium">Collision Mesh:</span>
-                          <span className="text-slate-200 font-semibold">{model.technicalDetails.collisionMesh}</span>
+
+                      {/* Animations Section */}
+                      {(model.technicalDetails.animationsTracks !== undefined || model.technicalDetails.riggedAnimations !== undefined || model.technicalDetails.morphAnimations !== undefined) && (
+                        <div className="technical-group">
+                          <h3 className="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3">Animations</h3>
+                          <div className="space-y-2">
+                            {model.technicalDetails.animationsTracks !== undefined && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">Animation Tracks:</span>
+                                <span className="text-slate-200 font-semibold">{model.technicalDetails.animationsTracks}</span>
+                              </div>
+                            )}
+                            {model.technicalDetails.riggedAnimations !== undefined && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">Rigged Animations:</span>
+                                <span className={`font-semibold ${model.technicalDetails.riggedAnimations === 'Yes' || model.technicalDetails.riggedAnimations === true ? 'text-green-400' : 'text-slate-400'}`}>
+                                  {model.technicalDetails.riggedAnimations === 'Yes' || model.technicalDetails.riggedAnimations === true ? 'Yes' : 'No'}
+                                </span>
+                              </div>
+                            )}
+                            {model.technicalDetails.morphAnimations !== undefined && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">Morph Animations:</span>
+                                <span className={`font-semibold ${model.technicalDetails.morphAnimations === 'Yes' || model.technicalDetails.morphAnimations === true ? 'text-green-400' : 'text-slate-400'}`}>
+                                  {model.technicalDetails.morphAnimations === 'Yes' || model.technicalDetails.morphAnimations === true ? 'Yes' : 'No'}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Additional Information Section */}
+                      {(model.technicalDetails.lods || model.technicalDetails.numberOfLods || model.technicalDetails.collisionMesh || model.technicalDetails.uvMapping || model.technicalDetails.scanned !== undefined || model.technicalDetails.supportedPlatforms) && (
+                        <div className="technical-group">
+                          <h3 className="text-xs font-semibold text-indigo-400 uppercase tracking-wider mb-3">Additional Information</h3>
+                          <div className="space-y-2">
+                            {model.technicalDetails.lods && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">LODs:</span>
+                                <span className={`font-semibold ${model.technicalDetails.lods === 'Yes' || model.technicalDetails.lods === true ? 'text-green-400' : 'text-slate-400'}`}>
+                                  {model.technicalDetails.lods === 'Yes' || model.technicalDetails.lods === true ? 'Yes' : model.technicalDetails.lods}
+                                </span>
+                              </div>
+                            )}
+                            {model.technicalDetails.numberOfLods && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">Number of LODs:</span>
+                                <span className="text-slate-200 font-semibold">{model.technicalDetails.numberOfLods}</span>
+                              </div>
+                            )}
+                            {model.technicalDetails.collisionMesh && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">Collision Mesh:</span>
+                                <span className={`font-semibold ${model.technicalDetails.collisionMesh === 'Yes' || model.technicalDetails.collisionMesh.includes('Yes') ? 'text-green-400' : 'text-slate-200'}`}>
+                                  {model.technicalDetails.collisionMesh}
+                                </span>
+                              </div>
+                            )}
+                            {model.technicalDetails.uvMapping && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">UV Mapping:</span>
+                                <span className="text-slate-200 font-semibold">{model.technicalDetails.uvMapping}</span>
+                              </div>
+                            )}
+                            {model.technicalDetails.scanned !== undefined && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">Scanned:</span>
+                                <span className={`font-semibold ${model.technicalDetails.scanned === 'Yes' || model.technicalDetails.scanned === true ? 'text-green-400' : 'text-slate-400'}`}>
+                                  {model.technicalDetails.scanned === 'Yes' || model.technicalDetails.scanned === true ? 'Yes' : 'No'}
+                                </span>
+                              </div>
+                            )}
+                            {model.technicalDetails.supportedPlatforms && (
+                              <div className="flex justify-between items-center py-2 px-3 bg-slate-800/50 rounded-lg border border-white/5">
+                                <span className="text-slate-400 font-medium">Supported Platforms:</span>
+                                <div className="flex flex-wrap gap-2 justify-end">
+                                  {model.technicalDetails.supportedPlatforms.split(',').map((platform, index) => (
+                                    <span key={index} className="text-slate-200 font-semibold text-sm">
+                                      {platform.trim()}
+                                    </span>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       )}
                     </div>

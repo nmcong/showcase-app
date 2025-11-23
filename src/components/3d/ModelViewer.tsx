@@ -183,27 +183,99 @@ function Model({ url, texturesPath, onProgress }: { url: string; texturesPath?: 
           if (child.isMesh && child.material) {
             const material = child.material;
             const materialName = material.name?.toLowerCase() || child.name?.toLowerCase() || '';
+            const meshName = child.name?.toLowerCase() || '';
+
+            console.log(`Found mesh: ${child.name}, Material: ${material.name}`);
 
             // Find matching texture set
+            let matched = false;
             for (const set of materialSets) {
-              if (set.materialNames.some(name => materialName.includes(name.toLowerCase()))) {
+              const lowerPrefix = set.prefix.toLowerCase();
+              const lowerMaterialName = materialName.toLowerCase();
+              const lowerMeshName = meshName.toLowerCase();
+              
+              // Check multiple matching strategies
+              // 1. Check if material/mesh name contains any of the material names
+              const nameMatch = set.materialNames.some(name => {
+                const lowerName = name.toLowerCase();
+                return lowerMaterialName.includes(lowerName) || lowerMeshName.includes(lowerName);
+              });
+
+              // 2. Check if material/mesh name contains the prefix
+              const prefixMatch = lowerMaterialName.includes(lowerPrefix) || 
+                                 lowerMeshName.includes(lowerPrefix);
+
+              // 3. Check if prefix contains key parts (e.g., "bladeoldbamboo" -> check for "blade")
+              const keyPartMatch = set.materialNames.some(name => {
+                const lowerName = name.toLowerCase();
+                return lowerPrefix.includes(lowerName) && 
+                       (lowerMaterialName.includes(lowerName) || lowerMeshName.includes(lowerName));
+              });
+
+              if (nameMatch || prefixMatch || keyPartMatch) {
                 const textures = textureSets[set.name];
                 
-                // Apply textures to material
-                if (textures.baseColor) material.map = textures.baseColor;
-                if (textures.ao) material.aoMap = textures.ao;
-                if (textures.metallic) material.metalnessMap = textures.metallic;
-                if (textures.normal) material.normalMap = textures.normal;
-                if (textures.roughness) material.roughnessMap = textures.roughness;
+                if (!textures) {
+                  console.warn(`No textures found for ${set.name}`);
+                  continue;
+                }
                 
+                // Ensure material is MeshStandardMaterial
+                if (material.type !== 'MeshStandardMaterial') {
+                  console.warn(`Material ${material.name} is not MeshStandardMaterial (${material.type}), textures may not apply correctly`);
+                }
+                
+                // Apply textures to material
+                if (textures.baseColor) {
+                  material.map = textures.baseColor;
+                  console.log(`  ✓ Applied baseColor for ${set.name}`);
+                }
+                if (textures.ao) {
+                  material.aoMap = textures.ao;
+                  material.aoMapIntensity = 1.0;
+                  console.log(`  ✓ Applied AO for ${set.name}`);
+                }
+                if (textures.metallic) {
+                  material.metalnessMap = textures.metallic;
+                  console.log(`  ✓ Applied metallic for ${set.name}`);
+                }
+                if (textures.normal) {
+                  material.normalMap = textures.normal;
+                  material.normalScale = new THREE.Vector2(1, 1);
+                  console.log(`  ✓ Applied normal for ${set.name}`);
+                }
+                if (textures.roughness) {
+                  material.roughnessMap = textures.roughness;
+                  console.log(`  ✓ Applied roughness for ${set.name}`);
+                }
+                
+                // Set material properties for PBR
+                material.metalness = 1.0;
+                material.roughness = 1.0;
                 material.needsUpdate = true;
-                console.log(`Applied textures to ${set.name} material`);
+                console.log(`✅ Successfully applied all textures to ${set.name} material`);
+                matched = true;
                 break;
               }
+            }
+
+            if (!matched) {
+              console.warn(`No matching texture set found for material: ${material.name}, mesh: ${child.name}`);
             }
           }
         });
 
+        // Force scene update after applying textures
+        scene.traverse((child: any) => {
+          if (child.isMesh && child.material) {
+            child.material.needsUpdate = true;
+            if (child.geometry) {
+              child.geometry.attributesNeedUpdate = true;
+            }
+          }
+        });
+
+        console.log('✅ All textures applied and scene updated');
         setIsTexturesLoaded(true);
       } catch (error) {
         console.error('Error loading textures:', error);

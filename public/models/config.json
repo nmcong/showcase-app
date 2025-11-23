@@ -27,26 +27,26 @@
         "fileSize": "Modular pack"
       },
       "features": [
-        "Modular design - mix and match components",
+        "No AI",
         "11 unique meshes",
-        "High-quality PBR materials",
-        "Optimized for real-time rendering",
-        "Game-ready asset",
-        "Perfect for samurai and feudal Japan settings"
+        "Highly detailed models and PBR materials",
+        "Optimized for games",
+        "Material Masking for tweaking and changing more colors",
+        "3 skin options for the blades (standard, cracked and old)",
+        "Modular parts for creating various combinations, also work well with other sword packs in the Modular Katana Series"
       ],
       "technicalDetails": {
-        "triangles": "234 / 8,402",
-        "totalTriangles": "43,974",
-        "vertices": "123 / 4,261",
         "uniqueMeshes": "11",
-        "numberOfTextures": "56",
-        "maxTextureResolution": "4096",
-        "numberOfMaterials": "12",
-        "vertexColors": "No",
-        "squareTextures": "Yes",
-        "animationsTracks": "0",
-        "riggedAnimations": "No",
-        "morphAnimations": "No"
+        "vertexCount": "144-5.748",
+        "trisCount": "Fully assembled katana with scabbard: 17736 tris, Fully assembled tachi with scabbard: 18526 tris, Fully assembled wakizashi with scabbard: 5360 tris ( For tris counts of each modular part, you can see the image above )",
+        "collisionMesh": "Yes, automatically generated",
+        "lods": "Yes, automatically generated",
+        "numberOfLods": "4 LODs",
+        "numberOfMaterials": "3",
+        "numberOfMaterialInstances": "12",
+        "numberOfTextures": "42 (Each modular asset is assigned a unique material, with the exception of the blade assets, which all share a single material )",
+        "textureResolution": "4096x4096",
+        "supportedPlatforms": "Windows (x64)"
       }
     },
     {
