@@ -17,34 +17,41 @@ export default function HomePage() {
     },
     {
       id: '2',
-      name: 'Props',
-      slug: 'props',
-      description: '3D prop models',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '3',
-      name: 'Environments',
-      slug: 'environments',
-      description: '3D environment models',
+      name: 'Weapons',
+      slug: 'weapons',
+      description: '3D weapon models',
       createdAt: new Date(),
       updatedAt: new Date(),
     },
   ]);
 
   const [availableTags] = useState<string[]>([
-        'Characters',
-        'Props',
-        'Weapons',
-        'Vehicles',
-        'Environment',
-        'Buildings',
-        'Nature',
-        'Sci-Fi',
-        'Fantasy',
-        'Modern',
-      ]);
+    // Category-based tags
+    'Characters',
+    'Weapons',
+    // Weapon types
+    'Katana',
+    'Samurai',
+    'Sword',
+    'Weapon',
+    'Modular',
+    'Tachi',
+    'Wakizashi',
+    // Style/Theme tags
+    'Japanese',
+    'Medieval',
+    // Character/Animal tags
+    'Animal',
+    'Character',
+    'Cute',
+    'Mammal',
+    'Wildlife',
+    'Capybara',
+    // Material/Design tags
+    'Bamboo',
+    'Kitsune',
+    'Peony',
+  ]);
 
   return (
     <div id="home-page" className="home-page min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">

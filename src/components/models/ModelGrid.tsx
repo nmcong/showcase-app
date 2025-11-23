@@ -69,9 +69,12 @@ export function ModelGrid() {
 
         // Apply filters
         if (filters.category) {
-          filteredModels = filteredModels.filter((m: any) => 
-            m.category?.toLowerCase() === filters.category?.toLowerCase()
-          );
+          filteredModels = filteredModels.filter((m: any) => {
+            const modelCategorySlug = typeof m.category === 'string' 
+              ? m.category.toLowerCase() 
+              : m.category?.slug?.toLowerCase() || m.category?.name?.toLowerCase();
+            return modelCategorySlug === filters.category?.toLowerCase();
+          });
         }
 
         if (filters.tags && filters.tags.length > 0) {

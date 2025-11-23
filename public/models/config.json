@@ -6,7 +6,7 @@
       "slug": "bamboo-katana",
       "description": "A comprehensive modular katana pack featuring traditional Japanese samurai swords with bamboo and kitsune designs. This pack includes multiple modular components that can be mixed and matched to create various katana configurations. Features high-quality PBR textures, optimized geometry, and game-ready assets perfect for samurai games, feudal Japan settings, and historical action games.",
       "category": "Weapons",
-      "tags": ["Katana", "Samurai", "Sword", "Japanese", "Weapon", "Bamboo", "Kitsune", "Modular", "Medieval"],
+      "tags": ["Weapons", "Katana", "Samurai", "Sword", "Japanese", "Weapon", "Bamboo", "Kitsune", "Modular", "Medieval"],
       "thumbnail": "/models/KatanaBamboo/thumbnail.jpg",
       "modelPath": "/models/KatanaBamboo/bamboo_katana.glb",
       "images": [
@@ -55,7 +55,7 @@
       "slug": "katana-samurai-sword-modular-pack-peony-flower",
       "description": "A comprehensive modular katana pack featuring traditional Japanese samurai swords with peony flower designs. This pack includes fully assembled katana, tachi, and wakizashi variants with scabbards. Features high-quality PBR textures, automatic collision meshes, and 4 LOD levels for optimal performance. Perfect for samurai games, feudal Japan settings, and historical action games.",
       "category": "Weapons",
-      "tags": ["Katana", "Samurai", "Sword", "Japanese", "Weapon", "Modular", "Peony", "Tachi", "Wakizashi"],
+      "tags": ["Weapons", "Katana", "Samurai", "Sword", "Japanese", "Weapon", "Modular", "Peony", "Tachi", "Wakizashi"],
       "thumbnail": "/models/Peony/images/4ae788a2-2cd6-4afb-9757-c45cb55d1277.jpg",
       "images": [
         "/models/Peony/images/0750825e-dd3e-4757-bbaf-dfc8aa717b1e.jpg",
@@ -105,7 +105,7 @@
       "slug": "cute-capybara",
       "description": "An adorable and highly detailed capybara 3D model. Perfect for character design, game development, or animation projects. Features clean topology, optimized geometry, and high-quality textures. This cute capybara model is ready to use in your projects.",
       "category": "Characters",
-      "tags": ["Capybara", "Animal", "Character", "Cute", "Mammal", "Wildlife"],
+      "tags": ["Characters", "Animal", "Character", "Cute", "Mammal", "Wildlife", "Capybara"],
       "thumbnail": "/models/Capybara/images/2c860969-76b0-43be-9c37-3b6ca5e11f8b.jpg",
       "images": [
         "/models/Capybara/images/2c860969-76b0-43be-9c37-3b6ca5e11f8b.jpg",
